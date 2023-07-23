@@ -4,7 +4,7 @@
     <style>
         :root {
             --primary-color: pink;
-            --secondary-color: black; /* Change white to black */
+            --secondary-color: black;
             --accent-color: #444;
             --overlay-color: rgba(255, 255, 255, 0.8);
         }
@@ -66,6 +66,19 @@
             visibility: hidden;
         }
 
+        #thought-bubble {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 2px solid black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            visibility: hidden;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -95,6 +108,9 @@
             <p>Health: <span id="health">100</span></p>
             <p>Happiness: <span id="happiness">100</span></p>
         </div>
+        <div id="thought-bubble">
+            <p id="thought"></p>
+        </div>
         <button id="feed" style="display: none;">Feed 🥕</button>
         <button id="play" style="display: none;">Play 🎾</button>
         <button id="heal" style="display: none;">Heal 💊</button>
@@ -103,8 +119,14 @@
     <script>
         let health = 100;
         let happiness = 100;
+        let hunger = 0;
 
-        // Function to show a message for a specified duration
+        let petPreferences = {
+            "🐶": { "feed": "🦴", "play": "🎾", "heal": "💊" },
+            "🐱": { "feed": "🐟", "play": "🧶", "heal": "💊" },
+            "🐰": { "feed": "🥕", "play": "🧸", "heal": "💊" },
+        };
+
         function showMessage(message, duration) {
             let messageElement = document.getElementById('message');
             messageElement.textContent = message;
@@ -114,7 +136,6 @@
             }, duration);
         }
 
-        // Select pet
         let petOptions = document.getElementsByClassName('pet-option');
         for (let i = 0; i < petOptions.length; i++) {
             petOptions[i].addEventListener('click', function() {
@@ -127,18 +148,34 @@
             });
         }
 
-        // Decrease health and happiness over time
         setInterval(function() {
             health = Math.max(0, health - 10);
             happiness = Math.max(0, happiness - 10);
+            hunger = Math.min(100, hunger + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
+
+            let pet = document.getElementById('pet').textContent;
+            let thoughtBubble = document.getElementById('thought-bubble');
+            let thought = document.getElementById('thought');
+            if (health <= 40) {
+                thoughtBubble.style.visibility = 'visible';
+                thought.textContent = petPreferences[pet].heal;
+            } else if (happiness <= 40) {
+                thoughtBubble.style.visibility = 'visible';
+                thought.textContent = petPreferences[pet].play;
+            } else if (hunger >= 60) {
+                thoughtBubble.style.visibility = 'visible';
+                thought.textContent = petPreferences[pet].feed;
+            } else {
+                thoughtBubble.style.visibility = 'hidden';
+            }
         }, 5000);
 
-        // Feed the pet to increase health
         let feedButton = document.getElementById('feed');
         feedButton.addEventListener('click', function() {
             health = Math.min(100, health + 20);
+            hunger = Math.max(0, hunger - 30);
             document.getElementById('health').textContent = health;
             showMessage('You fed your pet!', 2000);
             feedButton.disabled = true;
@@ -147,7 +184,6 @@
             }, 5000);
         });
 
-        // Play with the pet to increase happiness
         let playButton = document.getElementById('play');
         playButton.addEventListener('click', function() {
             happiness = Math.min(100, happiness + 20);
@@ -159,7 +195,6 @@
             }, 5000);
         });
 
-        // Heal the pet to increase health and happiness
         let healButton = document.getElementById('heal');
         healButton.addEventListener('click', function() {
             health = Math.min(100, health + 20);
