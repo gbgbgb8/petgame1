@@ -99,11 +99,6 @@
 
             grid.classList.add('resetting');
 
-            // Remove all cells from the grid
-            while (grid.firstChild) {
-                grid.removeChild(grid.firstChild);
-            }
-
             let countdown = 5;
             const countdownInterval = setInterval(() => {
                 countdown--;
@@ -112,6 +107,10 @@
                     clearInterval(countdownInterval);
                     hiddenCell = Math.floor(Math.random() * gridSize);
                     score = gridSize;
+                    // Remove all cells from the grid
+                    while (grid.firstChild) {
+                        grid.removeChild(grid.firstChild);
+                    }
                     // Recreate the grid
                     for(let i = 0; i < gridSize; i++) {
                         const cell = document.createElement('div');
