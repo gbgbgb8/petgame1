@@ -58,14 +58,6 @@
             outline: none;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-        #game-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -113,7 +105,6 @@
         <button id="reset">Reset</button>
     </div>
     <div id="grid" class="grid"></div>
-    <div id="game-overlay"></div>
 
     <script>
         const gridSize = 25;
@@ -124,7 +115,6 @@
         const grid = document.getElementById('grid');
         const scoreElement = document.getElementById('score');
         const resetButton = document.getElementById('reset');
-        const gameOverlay = document.getElementById('game-overlay');
 
         scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
 
@@ -237,7 +227,6 @@
         }
 
         resetButton.addEventListener('click', restartGame);
-        gameOverlay.addEventListener('click', resetGame);
 
         // Show the instructions modal on first load
         const modal = document.getElementById('myModal');
