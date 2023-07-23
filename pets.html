@@ -40,23 +40,38 @@
         }, 5000);
 
         // Feed the pet to increase health
-        document.getElementById('feed').addEventListener('click', function() {
+        let feedButton = document.getElementById('feed');
+        feedButton.addEventListener('click', function() {
             health = Math.min(100, health + 20);
             document.getElementById('health').textContent = health;
+            feedButton.disabled = true;
+            setTimeout(function() {
+                feedButton.disabled = false;
+            }, 5000);
         });
 
         // Play with the pet to increase happiness
-        document.getElementById('play').addEventListener('click', function() {
+        let playButton = document.getElementById('play');
+        playButton.addEventListener('click', function() {
             happiness = Math.min(100, happiness + 20);
             document.getElementById('happiness').textContent = happiness;
+            playButton.disabled = true;
+            setTimeout(function() {
+                playButton.disabled = false;
+            }, 5000);
         });
 
         // Heal the pet to increase health and happiness
-        document.getElementById('heal').addEventListener('click', function() {
+        let healButton = document.getElementById('heal');
+        healButton.addEventListener('click', function() {
             health = Math.min(100, health + 20);
             happiness = Math.min(100, happiness + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
+            healButton.disabled = true;
+            setTimeout(function() {
+                healButton.disabled = false;
+            }, 5000);
         });
     </script>
 </body>
