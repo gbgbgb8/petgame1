@@ -30,20 +30,20 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            width: 90vw; /* Adjust width to scale with viewport */
+            width: 90vw;
             max-width: 500px;
-            padding: 5vw; /* Add padding to scale with viewport */
+            padding: 5vw;
         }
         .cell {
             height: 0;
-            padding-bottom: 18vw; /* Adjust padding to scale with viewport */
+            padding-bottom: 18vw;
             border: 1px solid #000;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            font-size: 3vw; /* Adjust font-size to scale with viewport */
+            font-size: 3vw;
             color: #444;
             transition: background-color 0.2s;
         }
@@ -82,12 +82,15 @@
         }
         @media (min-width: 600px) {
             .grid {
-                width: 80%;
+                width: 500px;  /* Fixed width */
                 padding: 10px;
             }
             .cell {
-                padding-bottom: 16%;
+                padding-bottom: 100px; /* Fixed padding */
                 font-size: 1.5em;
+            }
+            .scoreboard {
+                width: 500px; /* Fixed width */
             }
         }
     </style>
@@ -110,9 +113,9 @@
     <script>
         const gridSize = 25;
         let hiddenCell = Math.floor(Math.random() * gridSize);
-        let score = gridSize;
-        let totalScore = 0;
-        let rounds = 0;
+        let score = gridSize; 
+        let totalScore = 0; 
+        let rounds = 0; 
         const grid = document.getElementById('grid');
         const scoreElement = document.getElementById('score');
         const resetButton = document.getElementById('reset');
@@ -129,20 +132,20 @@
         }
 
         function getColor(dist) {
-            let normalizedDist = dist / Math.sqrt(50);
-            let r = Math.floor((1 - normalizedDist) * 255);
-            let g = 0;
-            let b = Math.floor(normalizedDist * 255);
+            let normalizedDist = dist / Math.sqrt(50); 
+            let r = Math.floor((1 - normalizedDist) * 255); 
+            let g = 0; 
+            let b = Math.floor(normalizedDist * 255); 
 
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
 
         function getEmoji(dist) {
-            if (dist < 1) return "🔥";
-            else if (dist < 2) return "🥵";
-            else if (dist < 3) return "🥶";
-            else if (dist < 4) return "🧊";
-            else return "❄️";
+            if (dist < 1) return "🔥"; 
+            else if (dist < 2) return "🥵"; 
+            else if (dist < 3) return "🥶"; 
+            else if (dist < 4) return "🧊"; 
+            else return "❄️"; 
         }
 
         function resetGame() {
