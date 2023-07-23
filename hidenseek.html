@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hide and Seek</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: auto;
+            width: 80%;
+        }
+        .cell {
+            height: 50px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid" class="grid"></div>
+
+    <script>
+        const gridSize = 25;
+        const hiddenCell = Math.floor(Math.random() * gridSize);
+        const grid = document.getElementById('grid');
+
+        // Calculate distance between two cells
+        function distance(cell1, cell2) {
+            let x1 = cell1 % 5;
+            let y1 = Math.floor(cell1 / 5);
+            let x2 = cell2 % 5;
+            let y2 = Math.floor(cell2 / 5);
+
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+
+        // Calculate color based on distance
+        function getColor(dist) {
+            // Normalize the distance (0 to 1)
+            let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
+            
+            let r = Math.floor((1 - normalizedDist) * 255); // Red decreases with normalized distance
+            let g = 0; // Green is always 0
+            let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
+
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+        }
+
+        // Get emoji based on distance
+        function getEmoji(dist) {
+            if (dist < 1) return "🔥"; // Fire
+            else if (dist < 2) return "🥵"; // Hot
+            else if (dist < 3) return "🥵"; // Warm
+            else if (dist < 4) return "🧊"; // Frozen
+            else if (dist < 5) return "❄️"; // Cold
+            else return "🧊"; // Cool
+        }
+
+        for(let i = 0; i < gridSize; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.textContent = i + 1;
+            cell.addEventListener('click', () => {
+                let dist = distance(i, hiddenCell);
+                cell.style.backgroundColor = getColor(dist);
+                if(i === hiddenCell) {
+                    cell.textContent = "🏆"; // Trophy for winning cell
+                    alert('Congratulations! You found it!');
+                } else {
+                    cell.textContent = getEmoji(dist);
+                }
+                cell.removeEventListener('click', arguments.callee);
+            });
+
+            grid.appendChild(cell);
+        }
+    </script>
+</body>
+</html>
