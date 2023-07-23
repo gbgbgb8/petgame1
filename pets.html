@@ -19,17 +19,36 @@
 </head>
 <body>
     <h1>Ms. Doctor DoLittle's Pet Care</h1>
-    <div id="pet-area">
-        <p id="pet">🐶</p>
+    <div id="pet-selection">
+        <p>Select your pet:</p>
+        <button class="pet-option" data-pet="🐶">Dog</button>
+        <button class="pet-option" data-pet="🐱">Cat</button>
+        <button class="pet-option" data-pet="🐰">Rabbit</button>
+    </div>
+    <div id="pet-area" style="display: none;">
+        <p id="pet"></p>
         <p>Health: <span id="health">100</span></p>
         <p>Happiness: <span id="happiness">100</span></p>
     </div>
-    <button id="feed">Feed 🥕</button>
-    <button id="play">Play 🎾</button>
-    <button id="heal">Heal 💊</button>
+    <button id="feed" style="display: none;">Feed 🥕</button>
+    <button id="play" style="display: none;">Play 🎾</button>
+    <button id="heal" style="display: none;">Heal 💊</button>
     <script>
         let health = 100;
         let happiness = 100;
+
+        // Select pet
+        let petOptions = document.getElementsByClassName('pet-option');
+        for (let i = 0; i < petOptions.length; i++) {
+            petOptions[i].addEventListener('click', function() {
+                document.getElementById('pet').textContent = this.dataset.pet;
+                document.getElementById('pet-selection').style.display = 'none';
+                document.getElementById('pet-area').style.display = 'block';
+                document.getElementById('feed').style.display = 'inline-block';
+                document.getElementById('play').style.display = 'inline-block';
+                document.getElementById('heal').style.display = 'inline-block';
+            });
+        }
 
         // Decrease health and happiness over time
         setInterval(function() {
