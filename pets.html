@@ -138,6 +138,16 @@
             }, duration);
         }
 
+        function updateThoughtBubble(content) {
+            let thoughtBubble = document.getElementById('thought-bubble');
+            let thought = document.getElementById('thought');
+            thought.textContent = content;
+            thoughtBubble.style.visibility = 'visible';
+            setTimeout(function() {
+                thoughtBubble.style.visibility = 'hidden';
+            }, 2000);
+        }
+
         let petOptions = document.getElementsByClassName('pet-option');
         for (let i = 0; i < petOptions.length; i++) {
             petOptions[i].addEventListener('click', function() {
@@ -158,22 +168,16 @@
             document.getElementById('happiness').textContent = happiness;
 
             let pet = document.getElementById('pet').textContent;
-            let thoughtBubble = document.getElementById('thought-bubble');
-            let thought = document.getElementById('thought');
             if (health <= 40) {
-                thoughtBubble.style.visibility = 'visible';
-                thought.textContent = petPreferences[pet].heal;
                 currentNeed = 'heal';
+                updateThoughtBubble(petPreferences[pet].heal);
             } else if (happiness <= 40) {
-                thoughtBubble.style.visibility = 'visible';
-                thought.textContent = petPreferences[pet].play;
                 currentNeed = 'play';
+                updateThoughtBubble(petPreferences[pet].play);
             } else if (hunger >= 60) {
-                thoughtBubble.style.visibility = 'visible';
-                thought.textContent = petPreferences[pet].feed;
                 currentNeed = 'feed';
+                updateThoughtBubble(petPreferences[pet].feed);
             } else {
-                thoughtBubble.style.visibility = 'hidden';
                 currentNeed = null;
             }
         }, 5000);
@@ -185,8 +189,10 @@
             document.getElementById('health').textContent = health;
             if (currentNeed == 'feed') {
                 showMessage('Correct action! Your pet is happy.', 2000, true);
+                updateThoughtBubble('✔️');
             } else {
                 showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+                updateThoughtBubble('❌');
             }
             feedButton.disabled = true;
             setTimeout(function() {
@@ -200,8 +206,10 @@
             document.getElementById('happiness').textContent = happiness;
             if (currentNeed == 'play') {
                 showMessage('Correct action! Your pet is happy.', 2000, true);
+                updateThoughtBubble('✔️');
             } else {
                 showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+                updateThoughtBubble('❌');
             }
             playButton.disabled = true;
             setTimeout(function() {
@@ -217,8 +225,10 @@
             document.getElementById('happiness').textContent = happiness;
             if (currentNeed == 'heal') {
                 showMessage('Correct action! Your pet is happy.', 2000, true);
+                updateThoughtBubble('✔️');
             } else {
                 showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+                updateThoughtBubble('❌');
             }
             healButton.disabled = true;
             setTimeout(function() {
