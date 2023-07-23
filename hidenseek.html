@@ -31,82 +31,71 @@
         .scoreboard {
             margin-bottom: 20px;
             font-size: 24px;
+            border: 1px solid #000;
+            padding: 10px;
+            width: 50%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <div id="scoreboard" class="scoreboard"></div>
+    <div id="scoreboard" class="scoreboard">
+        <div id="score"></div>
+        <button id="reset">Reset</button>
+    </div>
     <div id="grid" class="grid"></div>
 
     <script>
         const gridSize = 25;
         let hiddenCell = Math.floor(Math.random() * gridSize);
         let score = gridSize; // Start score at gridSize (25)
+        let totalScore = 0; // Cumulative score
+        let rounds = 0; // Number of rounds played
         const grid = document.getElementById('grid');
-        const scoreboard = document.getElementById('scoreboard');
+        const scoreElement = document.getElementById('score');
+        const resetButton = document.getElementById('reset');
 
-        scoreboard.textContent = 'Score: ' + score;
+        scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
 
-        // Calculate distance between two cells
-        function distance(cell1, cell2) {
-            let x1 = cell1 % 5;
-            let y1 = Math.floor(cell1 / 5);
-            let x2 = cell2 % 5;
-            let y2 = Math.floor(cell2 / 5);
-
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        }
-
-        // Calculate color based on distance
-        function getColor(dist) {
-            // Normalize the distance (0 to 1)
-            let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
-            
-            let r = Math.floor((1 - normalizedDist) * 255); // Red decreases with normalized distance
-            let g = 0; // Green is always 0
-            let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
-
-            return 'rgb(' + r + ',' + g + ',' + b + ')';
-        }
-
-        // Get emoji based on distance
-        function getEmoji(dist) {
-            if (dist < 1) return "🔥"; // Fire
-            else if (dist < 2) return "🥵"; // Hot
-            else if (dist < 3) return "🥵"; // Warm
-            else if (dist < 4) return "🧊"; // Frozen
-            else if (dist < 5) return "❄️"; // Cold
-            else return "🧊"; // Cool
-        }
+        // Rest of your code...
 
         function resetGame() {
-            setTimeout(() => {
-                hiddenCell = Math.floor(Math.random() * gridSize);
-                score = gridSize;
-                scoreboard.textContent = 'Score: ' + score;
-                grid.innerHTML = ''; // Clear the grid
-                // Recreate the grid
-                for(let i = 0; i < gridSize; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.textContent = i + 1;
-                    cell.addEventListener('click', () => {
-                        score--; // Decrease score with each guess
-                        scoreboard.textContent = 'Score: ' + score;
-                        let dist = distance(i, hiddenCell);
-                        cell.style.backgroundColor = getColor(dist);
-                        if(i === hiddenCell) {
-                            cell.textContent = "🏆"; // Trophy for winning cell
-                            resetGame();
-                        } else {
-                            cell.textContent = getEmoji(dist);
-                        }
-                        cell.removeEventListener('click', arguments.callee);
-                    });
+            let countdown = 5;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: ${countdown}`;
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    hiddenCell = Math.floor(Math.random() * gridSize);
+                    score = gridSize;
+                    grid.innerHTML = ''; // Clear the grid
+                    // Recreate the grid
+                    for(let i = 0; i < gridSize; i++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.textContent = i + 1;
+                        cell.addEventListener('click', () => {
+                            score--; // Decrease score with each guess
+                            let dist = distance(i, hiddenCell);
+                            cell.style.backgroundColor = getColor(dist);
+                            if(i === hiddenCell) {
+                                totalScore += score;
+                                rounds++;
+                                cell.textContent = "🏆"; // Trophy for winning cell
+                                resetGame();
+                            } else {
+                                cell.textContent = getEmoji(dist);
+                            }
+                            cell.removeEventListener('click', arguments.callee);
+                        });
 
-                    grid.appendChild(cell);
+                        grid.appendChild(cell);
+                    }
+                    scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
                 }
-            }, 5000); // 5 seconds
+            }, 1000);
         }
 
         for(let i = 0; i < gridSize; i++) {
@@ -115,10 +104,11 @@
             cell.textContent = i + 1;
             cell.addEventListener('click', () => {
                 score--; // Decrease score with each guess
-                scoreboard.textContent = 'Score: ' + score;
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist);
                 if(i === hiddenCell) {
+                    totalScore += score;
+                    rounds++;
                     cell.textContent = "🏆"; // Trophy for winning cell
                     resetGame();
                 } else {
@@ -129,6 +119,8 @@
 
             grid.appendChild(cell);
         }
+
+        resetButton.addEventListener('click', resetGame);
     </script>
 </body>
 </html>
