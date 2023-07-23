@@ -6,6 +6,7 @@
             --primary-color: pink;
             --secondary-color: white;
             --accent-color: #444;
+            --overlay-color: rgba(255, 255, 255, 0.8);
         }
 
         body {
@@ -24,6 +25,12 @@
             justify-content: center;
             align-items: center;
             color: var(--secondary-color);
+        }
+
+        .overlay {
+            padding: 1rem;
+            background-color: var(--overlay-color);
+            border-radius: 1rem;
         }
 
         #pet-area {
@@ -75,22 +82,24 @@
     </style>
 </head>
 <body>
-    <h1>Ms. Doctor DoLittle's Pet Care</h1>
-    <div id="pet-selection">
-        <p>Select your pet:</p>
-        <button class="pet-option" data-pet="🐶">Dog</button>
-        <button class="pet-option" data-pet="🐱">Cat</button>
-        <button class="pet-option" data-pet="🐰">Rabbit</button>
+    <div class="overlay">
+        <h1>Ms. Doctor DoLittle's Pet Care</h1>
+        <div id="pet-selection">
+            <p>Select your pet:</p>
+            <button class="pet-option" data-pet="🐶">Dog</button>
+            <button class="pet-option" data-pet="🐱">Cat</button>
+            <button class="pet-option" data-pet="🐰">Rabbit</button>
+        </div>
+        <div id="pet-area" style="display: none;">
+            <p id="pet"></p>
+            <p>Health: <span id="health">100</span></p>
+            <p>Happiness: <span id="happiness">100</span></p>
+        </div>
+        <button id="feed" style="display: none;">Feed 🥕</button>
+        <button id="play" style="display: none;">Play 🎾</button>
+        <button id="heal" style="display: none;">Heal 💊</button>
+        <p id="message"></p>
     </div>
-    <div id="pet-area" style="display: none;">
-        <p id="pet"></p>
-        <p>Health: <span id="health">100</span></p>
-        <p>Happiness: <span id="happiness">100</span></p>
-    </div>
-    <button id="feed" style="display: none;">Feed 🥕</button>
-    <button id="play" style="display: none;">Play 🎾</button>
-    <button id="heal" style="display: none;">Heal 💊</button>
-    <p id="message"></p>
     <script>
         let health = 100;
         let happiness = 100;
