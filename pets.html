@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #pet-area {
+            margin: 50px;
+        }
+
+        button {
+            margin: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ms. Doctor DoLittle's Pet Care</h1>
+    <div id="pet-area">
+        <p id="pet">🐶</p>
+        <p>Health: <span id="health">100</span></p>
+        <p>Happiness: <span id="happiness">100</span></p>
+    </div>
+    <button id="feed">Feed 🥕</button>
+    <button id="play">Play 🎾</button>
+    <button id="heal">Heal 💊</button>
+    <script>
+        let health = 100;
+        let happiness = 100;
+
+        // Decrease health and happiness over time
+        setInterval(function() {
+            health -= 10;
+            happiness -= 10;
+            document.getElementById('health').textContent = health;
+            document.getElementById('happiness').textContent = happiness;
+        }, 1000);
+
+        // Feed the pet to increase health
+        document.getElementById('feed').addEventListener('click', function() {
+            health += 20;
+            document.getElementById('health').textContent = health;
+        });
+
+        // Play with the pet to increase happiness
+        document.getElementById('play').addEventListener('click', function() {
+            happiness += 20;
+            document.getElementById('happiness').textContent = happiness;
+        });
+
+        // Heal the pet to increase health and happiness
+        document.getElementById('heal').addEventListener('click', function() {
+            health += 20;
+            happiness += 20;
+            document.getElementById('health').textContent = health;
+            document.getElementById('happiness').textContent = happiness;
+        });
+    </script>
+</body>
+</html>
