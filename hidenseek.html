@@ -59,9 +59,51 @@
 
         scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
 
-        // Rest of your code...
+        // Calculate distance between two cells
+        function distance(cell1, cell2) {
+            let x1 = cell1 % 5;
+            let y1 = Math.floor(cell1 / 5);
+            let x2 = cell2 % 5;
+            let y2 = Math.floor(cell2 / 5);
+
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+
+        // Calculate color based on distance
+        function getColor(dist) {
+            // Normalize the distance (0 to 1)
+            let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
+            
+            let r = Math.floor((1 - normalizedDist) * 255); // Red decreases with normalized distance
+            let g = 0; // Green is always 0
+            let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
+
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+        }
+
+        // Get emoji based on distance
+        function getEmoji(dist) {
+            if (dist < 1) return "🔥"; // Fire
+            else if (dist < 2) return "🥵"; // Hot
+            else if (dist < 3) return "🥵"; // Warm
+            else if (dist < 4) return "🧊"; // Frozen
+            else if (dist < 5) return "❄️"; // Cold
+            else return "🧊"; // Cool
+        }
 
         function resetGame() {
+            // Don't reset the game if it's already resetting
+            if (grid.classList.contains('resetting')) {
+                return;
+            }
+
+            grid.classList.add('resetting');
+
+            // Remove all cells from the grid
+            while (grid.firstChild) {
+                grid.removeChild(grid.firstChild);
+            }
+
             let countdown = 5;
             const countdownInterval = setInterval(() => {
                 countdown--;
@@ -70,7 +112,6 @@
                     clearInterval(countdownInterval);
                     hiddenCell = Math.floor(Math.random() * gridSize);
                     score = gridSize;
-                    grid.innerHTML = ''; // Clear the grid
                     // Recreate the grid
                     for(let i = 0; i < gridSize; i++) {
                         const cell = document.createElement('div');
@@ -94,6 +135,7 @@
                         grid.appendChild(cell);
                     }
                     scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
+                    grid.classList.remove('resetting');
                 }
             }, 1000);
         }
