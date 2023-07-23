@@ -12,6 +12,7 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            font-family: Arial, sans-serif;
         }
         .grid {
             display: grid;
@@ -29,6 +30,9 @@
             justify-content: center;
             cursor: pointer;
             user-select: none;
+            font-size: 2em; /* Larger emojis */
+            color: #444;
+            transition: background-color 0.2s;
         }
         .scoreboard {
             margin-bottom: 20px;
@@ -40,6 +44,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        #reset {
+            background-color: #f44336; /* Red */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
         @media (min-width: 600px) {
             .grid {
@@ -126,7 +142,7 @@
                     for(let i = 0; i < gridSize; i++) {
                         const cell = document.createElement('div');
                         cell.className = 'cell';
-                        cell.textContent = i + 1;
+                        cell.textContent = ''; // Don't show numbers
                         cell.addEventListener('click', () => {
                             score--; // Decrease score with each guess
                             let dist = distance(i, hiddenCell);
@@ -159,7 +175,7 @@
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.textContent = i + 1;
+            cell.textContent = ''; // Don't show numbers
             cell.addEventListener('click', () => {
                 score--; // Decrease score with each guess
                 let dist = distance(i, hiddenCell);
