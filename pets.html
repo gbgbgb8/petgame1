@@ -120,6 +120,7 @@
         let health = 100;
         let happiness = 100;
         let hunger = 0;
+        let currentNeed = null;
 
         let petPreferences = {
             "🐶": { "feed": "🦴", "play": "🎾", "heal": "💊" },
@@ -127,10 +128,11 @@
             "🐰": { "feed": "🥕", "play": "🧸", "heal": "💊" },
         };
 
-        function showMessage(message, duration) {
+        function showMessage(message, duration, isSuccess) {
             let messageElement = document.getElementById('message');
             messageElement.textContent = message;
             messageElement.style.visibility = 'visible';
+            messageElement.style.color = isSuccess ? 'green' : 'red';
             setTimeout(function() {
                 messageElement.style.visibility = 'hidden';
             }, duration);
@@ -161,14 +163,18 @@
             if (health <= 40) {
                 thoughtBubble.style.visibility = 'visible';
                 thought.textContent = petPreferences[pet].heal;
+                currentNeed = 'heal';
             } else if (happiness <= 40) {
                 thoughtBubble.style.visibility = 'visible';
                 thought.textContent = petPreferences[pet].play;
+                currentNeed = 'play';
             } else if (hunger >= 60) {
                 thoughtBubble.style.visibility = 'visible';
                 thought.textContent = petPreferences[pet].feed;
+                currentNeed = 'feed';
             } else {
                 thoughtBubble.style.visibility = 'hidden';
+                currentNeed = null;
             }
         }, 5000);
 
@@ -177,7 +183,11 @@
             health = Math.min(100, health + 20);
             hunger = Math.max(0, hunger - 30);
             document.getElementById('health').textContent = health;
-            showMessage('You fed your pet!', 2000);
+            if (currentNeed == 'feed') {
+                showMessage('Correct action! Your pet is happy.', 2000, true);
+            } else {
+                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+            }
             feedButton.disabled = true;
             setTimeout(function() {
                 feedButton.disabled = false;
@@ -188,7 +198,11 @@
         playButton.addEventListener('click', function() {
             happiness = Math.min(100, happiness + 20);
             document.getElementById('happiness').textContent = happiness;
-            showMessage('You played with your pet!', 2000);
+            if (currentNeed == 'play') {
+                showMessage('Correct action! Your pet is happy.', 2000, true);
+            } else {
+                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+            }
             playButton.disabled = true;
             setTimeout(function() {
                 playButton.disabled = false;
@@ -201,7 +215,11 @@
             happiness = Math.min(100, happiness + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
-            showMessage('You healed your pet!', 2000);
+            if (currentNeed == 'heal') {
+                showMessage('Correct action! Your pet is happy.', 2000, true);
+            } else {
+                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+            }
             healButton.disabled = true;
             setTimeout(function() {
                 healButton.disabled = false;
