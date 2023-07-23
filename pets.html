@@ -112,6 +112,7 @@
             <p>Health: <span id="health">100</span></p>
             <p>Happiness: <span id="happiness">100</span></p>
             <p>Points: <span id="points">0</span></p>
+            <p>Level: <span id="level">1</span></p>
         </div>
         <div id="thought-bubble">
             <p id="thought"></p>
@@ -126,6 +127,7 @@
         let happiness = 100;
         let hunger = 0;
         let points = 0;
+        let level = 1;
         let currentNeed = null;
 
         let petPreferences = {
@@ -171,13 +173,14 @@
             });
         }
 
-        setInterval(function() {
+        function gameTick() {
             health = Math.max(0, health - 10);
             happiness = Math.max(0, happiness - 10);
             hunger = Math.min(100, hunger + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
             document.getElementById('points').textContent = points;
+            document.getElementById('level').textContent = level;
 
             let pet = document.getElementById('pet').textContent;
             if (health <= 0 || happiness <= 0) {
@@ -194,64 +197,42 @@
             } else {
                 currentNeed = null;
             }
-        }, 5000);
+        }
+
+        let gameInterval = setInterval(gameTick, 5000);
+
+        function actionButtonHandler(currentNeed) {
+            return function() {
+                health = Math.min(100, health + 20);
+                hunger = Math.max(0, hunger - 30);
+                document.getElementById('health').textContent = health;
+                if (this.id == currentNeed) {
+                    points += 10;
+                    showMessage('Correct action! Your pet is happy.', 2000, true);
+                    updateThoughtBubble('✔️');
+                } else {
+                    showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
+                    updateThoughtBubble('❌');
+                }
+                this.disabled = true;
+                setTimeout(() => { this.disabled = false; }, 5000);
+
+                if (points >= level * 100) {
+                    level += 1;
+                    clearInterval(gameInterval);
+                    gameInterval = setInterval(gameTick, Math.max(1000, 5000 - (level - 1) * 500));
+                }
+            }
+        }
 
         let feedButton = document.getElementById('feed');
-        feedButton.addEventListener('click', function() {
-            health = Math.min(100, health + 20);
-            hunger = Math.max(0, hunger - 30);
-            document.getElementById('health').textContent = health;
-            if (currentNeed == 'feed') {
-                points += 10;
-                showMessage('Correct action! Your pet is happy.', 2000, true);
-                updateThoughtBubble('✔️');
-            } else {
-                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
-                updateThoughtBubble('❌');
-            }
-            feedButton.disabled = true;
-            setTimeout(function() {
-                feedButton.disabled = false;
-            }, 5000);
-        });
+        feedButton.addEventListener('click', actionButtonHandler('feed'));
 
         let playButton = document.getElementById('play');
-        playButton.addEventListener('click', function() {
-            happiness = Math.min(100, happiness + 20);
-            document.getElementById('happiness').textContent = happiness;
-            if (currentNeed == 'play') {
-                points += 10;
-                showMessage('Correct action! Your pet is happy.', 2000, true);
-                updateThoughtBubble('✔️');
-            } else {
-                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
-                updateThoughtBubble('❌');
-            }
-            playButton.disabled = true;
-            setTimeout(function() {
-                playButton.disabled = false;
-            }, 5000);
-        });
+        playButton.addEventListener('click', actionButtonHandler('play'));
 
         let healButton = document.getElementById('heal');
-        healButton.addEventListener('click', function() {
-            health = Math.min(100, health + 20);
-            happiness = Math.min(100, happiness + 20);
-            document.getElementById('health').textContent = health;
-            document.getElementById('happiness').textContent = happiness;
-            if (currentNeed == 'heal') {
-                points += 10;
-                showMessage('Correct action! Your pet is happy.', 2000, true);
-                updateThoughtBubble('✔️');
-            } else {
-                showMessage('Incorrect action! Your pet is unhappy.', 2000, false);
-                updateThoughtBubble('❌');
-            }
-            healButton.disabled = true;
-            setTimeout(function() {
-                healButton.disabled = false;
-            }, 5000);
-        });
+        healButton.addEventListener('click', actionButtonHandler('heal'));
     </script>
 </body>
 </html>
