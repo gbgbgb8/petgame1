@@ -11,6 +11,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
         .grid {
             display: grid;
@@ -27,16 +28,24 @@
             cursor: pointer;
             user-select: none;
         }
+        .scoreboard {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
+    <div id="scoreboard" class="scoreboard"></div>
     <div id="grid" class="grid"></div>
 
     <script>
         const gridSize = 25;
-        const hiddenCell = Math.floor(Math.random() * gridSize);
-        const grid = document.getElementById('grid');
+        let hiddenCell = Math.floor(Math.random() * gridSize);
         let score = gridSize; // Start score at gridSize (25)
+        const grid = document.getElementById('grid');
+        const scoreboard = document.getElementById('scoreboard');
+
+        scoreboard.textContent = 'Score: ' + score;
 
         // Calculate distance between two cells
         function distance(cell1, cell2) {
@@ -70,17 +79,48 @@
             else return "🧊"; // Cool
         }
 
+        function resetGame() {
+            setTimeout(() => {
+                hiddenCell = Math.floor(Math.random() * gridSize);
+                score = gridSize;
+                scoreboard.textContent = 'Score: ' + score;
+                grid.innerHTML = ''; // Clear the grid
+                // Recreate the grid
+                for(let i = 0; i < gridSize; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = i + 1;
+                    cell.addEventListener('click', () => {
+                        score--; // Decrease score with each guess
+                        scoreboard.textContent = 'Score: ' + score;
+                        let dist = distance(i, hiddenCell);
+                        cell.style.backgroundColor = getColor(dist);
+                        if(i === hiddenCell) {
+                            cell.textContent = "🏆"; // Trophy for winning cell
+                            resetGame();
+                        } else {
+                            cell.textContent = getEmoji(dist);
+                        }
+                        cell.removeEventListener('click', arguments.callee);
+                    });
+
+                    grid.appendChild(cell);
+                }
+            }, 5000); // 5 seconds
+        }
+
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.textContent = i + 1;
             cell.addEventListener('click', () => {
                 score--; // Decrease score with each guess
+                scoreboard.textContent = 'Score: ' + score;
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist);
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
-                    alert('Congratulations! You found it! Your score is ' + score);
+                    resetGame();
                 } else {
                     cell.textContent = getEmoji(dist);
                 }
