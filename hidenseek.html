@@ -4,72 +4,71 @@
     <title>Hide and Seek</title>
     <style>
         body {
-        background-color: #add8e6;
-        margin: 0;
-        padding: 20px 0 0 0; /* Added padding to the top */
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Align items to the start */
-        height: 100vh;
-        flex-direction: column; /* Set direction to column */
-        font-family: Arial, sans-serif;
-    }
-    .scoreboard {
-        margin-bottom: 20px;
-        font-size: 24px;
-        border: 1px solid #000;
-        padding: 10px;
-        width: 100%; /* Set width to 100% */
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #fff;
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    }
+            background-color: #add8e6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        .scoreboard {
+            margin-bottom: 20px;
+            font-size: 24px;
+            border: 1px solid #000;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            width: 100%;
+            width: 90vw; /* Adjust width to scale with viewport */
             max-width: 500px;
+            padding: 5vw; /* Add padding to scale with viewport */
         }
         .cell {
             height: 0;
-            padding-bottom: 30%; /* Larger cells */
+            padding-bottom: 18vw; /* Adjust padding to scale with viewport */
             border: 1px solid #000;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            font-size: 2.5em; /* Larger emojis */
+            font-size: 3vw; /* Adjust font-size to scale with viewport */
             color: #444;
             transition: background-color 0.2s;
         }
-        
         #reset {
-            background-color: #f44336; /* Red */
+            background-color: #f44336;
             color: white;
             border: none;
-            padding: 10px 20px; /* Larger button */
-            font-size: 1.2em; /* Larger button text */
+            padding: 10px 20px;
+            font-size: 1.2em;
             border-radius: 5px;
             cursor: pointer;
             outline: none;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
         .modal-content {
             background-color: #fefefe;
@@ -84,9 +83,11 @@
         @media (min-width: 600px) {
             .grid {
                 width: 80%;
+                padding: 10px;
             }
-            .scoreboard {
-                width: 50%;
+            .cell {
+                padding-bottom: 16%;
+                font-size: 1.5em;
             }
         }
     </style>
@@ -109,16 +110,15 @@
     <script>
         const gridSize = 25;
         let hiddenCell = Math.floor(Math.random() * gridSize);
-        let score = gridSize; // Start score at gridSize (25)
-        let totalScore = 0; // Cumulative score
-        let rounds = 0; // Number of rounds played
+        let score = gridSize;
+        let totalScore = 0;
+        let rounds = 0;
         const grid = document.getElementById('grid');
         const scoreElement = document.getElementById('score');
         const resetButton = document.getElementById('reset');
 
         scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
 
-        // Calculate distance between two cells
         function distance(cell1, cell2) {
             let x1 = cell1 % 5;
             let y1 = Math.floor(cell1 / 5);
@@ -128,30 +128,24 @@
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         }
 
-        // Calculate color based on distance
         function getColor(dist) {
-            // Normalize the distance (0 to 1)
-            let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
-            
-            let r = Math.floor((1 - normalizedDist) * 255); // Red decreases with normalized distance
-            let g = 0; // Green is always 0
-            let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
+            let normalizedDist = dist / Math.sqrt(50);
+            let r = Math.floor((1 - normalizedDist) * 255);
+            let g = 0;
+            let b = Math.floor(normalizedDist * 255);
 
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
 
-        // Get emoji based on distance
         function getEmoji(dist) {
-            if (dist < 1) return "🔥"; // Fire
-            else if (dist < 2) return "🥵"; // Hot
-            else if (dist < 3) return "🥵"; // Warm
-            else if (dist < 4) return "🧊"; // Frozen
-            else if (dist < 5) return "❄️"; // Cold
-            else return "🧊"; // Cool
+            if (dist < 1) return "🔥";
+            else if (dist < 2) return "🥵";
+            else if (dist < 3) return "🥶";
+            else if (dist < 4) return "🧊";
+            else return "❄️";
         }
 
         function resetGame() {
-            // Don't reset the game if it's already resetting
             if (grid.classList.contains('resetting')) {
                 return;
             }
@@ -166,23 +160,21 @@
                     clearInterval(countdownInterval);
                     hiddenCell = Math.floor(Math.random() * gridSize);
                     score = gridSize;
-                    // Remove all cells from the grid
                     while (grid.firstChild) {
                         grid.removeChild(grid.firstChild);
                     }
-                    // Recreate the grid
                     for(let i = 0; i < gridSize; i++) {
                         const cell = document.createElement('div');
                         cell.className = 'cell';
-                        cell.textContent = ''; // Don't show numbers
+                        cell.textContent = '';
                         cell.addEventListener('click', () => {
-                            score--; // Decrease score with each guess
+                            score--;
                             let dist = distance(i, hiddenCell);
                             cell.style.backgroundColor = getColor(dist);
                             if(i === hiddenCell) {
                                 totalScore += score;
                                 rounds++;
-                                cell.textContent = "🏆"; // Trophy for winning cell
+                                cell.textContent = "🏆";
                                 resetGame();
                             } else {
                                 cell.textContent = getEmoji(dist);
@@ -207,15 +199,15 @@
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.textContent = ''; // Don't show numbers
+            cell.textContent = '';
             cell.addEventListener('click', () => {
-                score--; // Decrease score with each guess
+                score--;
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist);
                 if(i === hiddenCell) {
                     totalScore += score;
                     rounds++;
-                    cell.textContent = "🏆"; // Trophy for winning cell
+                    cell.textContent = "🏆";
                     resetGame();
                 } else {
                     cell.textContent = getEmoji(dist);
@@ -228,10 +220,8 @@
 
         resetButton.addEventListener('click', restartGame);
 
-        // Show the instructions modal on first load
         const modal = document.getElementById('myModal');
         modal.style.display = "block";
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target === modal) {
                 modal.style.display = "none";
