@@ -19,6 +19,13 @@
         #pet {
             font-size: 50px;
         }
+
+        #message {
+            color: green;
+            font-size: 20px;
+            margin-top: 20px;
+            visibility: hidden;
+        }
     </style>
 </head>
 <body>
@@ -37,9 +44,20 @@
     <button id="feed" style="display: none;">Feed 🥕</button>
     <button id="play" style="display: none;">Play 🎾</button>
     <button id="heal" style="display: none;">Heal 💊</button>
+    <p id="message"></p>
     <script>
         let health = 100;
         let happiness = 100;
+
+        // Function to show a message for a specified duration
+        function showMessage(message, duration) {
+            let messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.style.visibility = 'visible';
+            setTimeout(function() {
+                messageElement.style.visibility = 'hidden';
+            }, duration);
+        }
 
         // Select pet
         let petOptions = document.getElementsByClassName('pet-option');
@@ -67,6 +85,7 @@
         feedButton.addEventListener('click', function() {
             health = Math.min(100, health + 20);
             document.getElementById('health').textContent = health;
+            showMessage('You fed your pet!', 2000);
             feedButton.disabled = true;
             setTimeout(function() {
                 feedButton.disabled = false;
@@ -78,6 +97,7 @@
         playButton.addEventListener('click', function() {
             happiness = Math.min(100, happiness + 20);
             document.getElementById('happiness').textContent = happiness;
+            showMessage('You played with your pet!', 2000);
             playButton.disabled = true;
             setTimeout(function() {
                 playButton.disabled = false;
@@ -91,6 +111,7 @@
             happiness = Math.min(100, happiness + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
+            showMessage('You healed your pet!', 2000);
             healButton.disabled = true;
             setTimeout(function() {
                 healButton.disabled = false;
