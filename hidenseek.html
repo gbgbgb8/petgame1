@@ -3,21 +3,38 @@
 <head>
     <title>Hide and Seek</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50;
+            font-family: Arial, sans-serif;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            margin: auto;
-            width: 80%;
+            padding: 50px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #ecf0f1;
         }
         .cell {
             height: 50px;
-            border: 1px solid #000;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
+            background-color: #bdc3c7;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.5s;
         }
     </style>
 </head>
@@ -55,16 +72,15 @@
         function getEmoji(dist) {
             if (dist < 1) return "🔥"; // Fire
             else if (dist < 2) return "🥵"; // Hot
-            else if (dist < 3) return "🥵"; // Warm
-            else if (dist < 4) return "🧊"; // Frozen
+            else if (dist < 3) return "😅"; // Warm
+            else if (dist < 4) return "😰"; // Cool
             else if (dist < 5) return "❄️"; // Cold
-            else return "🧊"; // Cool
+            else return "🥶"; // Frozen
         }
 
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.textContent = i + 1;
             cell.addEventListener('click', () => {
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist);
