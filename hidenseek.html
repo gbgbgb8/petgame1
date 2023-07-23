@@ -139,6 +139,12 @@
             }, 1000);
         }
 
+        function restartGame() {
+            totalScore = 0;
+            rounds = 0;
+            resetGame();
+        }
+
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
@@ -161,7 +167,7 @@
             grid.appendChild(cell);
         }
 
-        resetButton.addEventListener('click', resetGame);
+        resetButton.addEventListener('click', restartGame);
     </script>
 </body>
 </html>
