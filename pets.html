@@ -107,6 +107,7 @@
             <p id="pet"></p>
             <p>Health: <span id="health">100</span></p>
             <p>Happiness: <span id="happiness">100</span></p>
+            <p>Points: <span id="points">0</span></p>
         </div>
         <div id="thought-bubble">
             <p id="thought"></p>
@@ -120,6 +121,7 @@
         let health = 100;
         let happiness = 100;
         let hunger = 0;
+        let points = 0;
         let currentNeed = null;
 
         let petPreferences = {
@@ -143,9 +145,14 @@
             let thought = document.getElementById('thought');
             thought.textContent = content;
             thoughtBubble.style.visibility = 'visible';
-            setTimeout(function() {
-                thoughtBubble.style.visibility = 'hidden';
-            }, 2000);
+        }
+
+        function gameOver() {
+            let petSelection = document.getElementById('pet-selection');
+            let petArea = document.getElementById('pet-area');
+            petSelection.style.display = 'block';
+            petArea.style.display = 'none';
+            showMessage('Game Over! Your pet is unhappy.', 5000, false);
         }
 
         let petOptions = document.getElementsByClassName('pet-option');
@@ -166,9 +173,12 @@
             hunger = Math.min(100, hunger + 20);
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
+            document.getElementById('points').textContent = points;
 
             let pet = document.getElementById('pet').textContent;
-            if (health <= 40) {
+            if (health <= 0 || happiness <= 0) {
+                gameOver();
+            } else if (health <= 40) {
                 currentNeed = 'heal';
                 updateThoughtBubble(petPreferences[pet].heal);
             } else if (happiness <= 40) {
@@ -188,6 +198,7 @@
             hunger = Math.max(0, hunger - 30);
             document.getElementById('health').textContent = health;
             if (currentNeed == 'feed') {
+                points += 10;
                 showMessage('Correct action! Your pet is happy.', 2000, true);
                 updateThoughtBubble('✔️');
             } else {
@@ -205,6 +216,7 @@
             happiness = Math.min(100, happiness + 20);
             document.getElementById('happiness').textContent = happiness;
             if (currentNeed == 'play') {
+                points += 10;
                 showMessage('Correct action! Your pet is happy.', 2000, true);
                 updateThoughtBubble('✔️');
             } else {
@@ -224,6 +236,7 @@
             document.getElementById('health').textContent = health;
             document.getElementById('happiness').textContent = happiness;
             if (currentNeed == 'heal') {
+                points += 10;
                 showMessage('Correct action! Your pet is happy.', 2000, true);
                 updateThoughtBubble('✔️');
             } else {
