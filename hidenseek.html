@@ -3,21 +3,40 @@
 <head>
     <title>Hide and Seek</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fafafa;
+            font-family: Arial, sans-serif;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            margin: auto;
-            width: 80%;
+            padding: 50px;
+            box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            overflow: hidden;
         }
         .cell {
             height: 50px;
-            border: 1px solid #000;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
+            background-color: #ddd;
+            box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.5s;
+        }
+        .found {
+            background-color: green;
         }
     </style>
 </head>
@@ -64,7 +83,6 @@
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.textContent = i + 1;
             cell.addEventListener('click', () => {
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist);
