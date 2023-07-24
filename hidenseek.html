@@ -149,13 +149,14 @@
         }
 
         function getColor(dist) {
-            let normalizedDist = dist / Math.sqrt(50); 
-            let r = Math.floor((1 - normalizedDist) * 255); 
-            let g = 0; 
-            let b = Math.floor(normalizedDist * 255); 
+    let normalizedDist = dist / Math.sqrt(50);
+    let r = Math.floor(normalizedDist * 255);
+    let g = 0;
+    let b = Math.floor((1 - normalizedDist) * 255);
+    
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
 
-            return 'rgb(' + r + ',' + g + ',' + b + ')';
-        }
 
         function getEmoji(dist) {
             if (dist < 1) return "😡"; 
