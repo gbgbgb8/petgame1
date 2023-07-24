@@ -26,6 +26,12 @@
             background: #fff;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
+        #score {
+            flex-grow: 1;  /* Added this to make the score text fill the available space */
+            white-space: nowrap;  /* Added this to prevent the score text from wrapping */
+            overflow: hidden;  /* Added this to hide overflow if the text is too long */
+            text-overflow: ellipsis;  /* Added this to add "..." at the end if the text is too long */
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
