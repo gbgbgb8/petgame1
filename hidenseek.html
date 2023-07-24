@@ -9,7 +9,7 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;  /* Center vertically */
+            align-items: center;
             height: 100vh;
             flex-direction: column;
             font-family: Arial, sans-serif;
@@ -46,9 +46,10 @@
             max-width: 500px;
             padding: 5vw;
             border: 3px solid #000;
+            gap: 2vw;  /* Added gap to prevent cells from touching */
         }
         .cell {
-            height: 18vw;
+            height: 16vw;  /* Adjusted height to account for the gap */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,6 +58,7 @@
             font-size: 12vw;
             color: #444;
             transition: background-color 0.2s;
+            border-radius: 50%;  /* Make the cells round */
         }
         .modal {
             display: none;
@@ -101,7 +103,7 @@
                 padding: 10px;
             }
             .cell {
-                height: 100px;
+                height: 90px;  /* Adjusted height for larger screens */
                 font-size: 50px;
             }
             .scoreboard {
@@ -189,7 +191,7 @@
                         cell.addEventListener('click', () => {
                             score--;
                             let dist = distance(i, hiddenCell);
-                            cell.style.backgroundColor = getColor(dist);
+                            cell.style.backgroundImage = `linear-gradient(${Math.atan2(i % 5 - hiddenCell % 5, Math.floor(i / 5) - Math.floor(hiddenCell / 5))}rad, ${getColor(dist)}, transparent)`;
                             if(i === hiddenCell) {
                                 totalScore += score;
                                 rounds++;
@@ -222,7 +224,7 @@
             cell.addEventListener('click', () => {
                 score--;
                 let dist = distance(i, hiddenCell);
-                cell.style.backgroundColor = getColor(dist);
+                cell.style.backgroundImage = `linear-gradient(${Math.atan2(i % 5 - hiddenCell % 5, Math.floor(i / 5) - Math.floor(hiddenCell / 5))}rad, ${getColor(dist)}, transparent)`;
                 if(i === hiddenCell) {
                     totalScore += score;
                     rounds++;
