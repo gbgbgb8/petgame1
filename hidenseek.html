@@ -16,21 +16,28 @@
         }
         .scoreboard {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 20px; /* Decrease the font size to make it more compact */
             border: 1px solid #000;
             padding: 10px;
-            width: 100%;
+            max-width: 500px; /* Add a max-width */
+            width: 90vw; /* Make the width responsive */
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #fff;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-        #score {
-            flex-grow: 1;  /* Added this to make the score text fill the available space */
-            white-space: nowrap;  /* Added this to prevent the score text from wrapping */
-            overflow: hidden;  /* Added this to hide overflow if the text is too long */
-            text-overflow: ellipsis;  /* Added this to add "..." at the end if the text is too long */
+        #reset {
+            margin-left: 10px; /* Add some spacing between the score and the button */
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em; /* Decrease the font size to make it more compact */
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
         .grid {
             display: grid;
@@ -51,17 +58,6 @@
             font-size: 12vw;
             color: #444;
             transition: background-color 0.2s;
-        }
-        #reset {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
         .modal {
             display: none;
