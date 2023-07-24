@@ -46,7 +46,7 @@
             max-width: 500px;
             padding: 5vw;
             border: 3px solid #000;
-            gap: 0; /* Removing the space between cells */
+            gap: 0;
         }
         .cell {
             height: 16vw;
@@ -116,7 +116,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Welcome to Hide and Seek!</h2>
-            <p>In this game, you will have to find the hidden cell. The cell will change its color based on how close you are to the hidden cell. The color goes from red (very close) to blue (very far).</p>
+            <p>In this game, you will have to find the hidden cell. The cell will change its color and emoji based on how close you are to the hidden cell. The color goes from red (very close) to blue (very far).</p>
             <p>Each time you click a cell, your score decreases. Your aim is to find the hidden cell with the highest score possible.</p>
             <p>Click anywhere outside this box to close it and start playing!</p>
         </div>
@@ -158,11 +158,11 @@
         }
 
         function getEmoji(dist) {
-            if (dist < 1) return "🌶️"; 
-            else if (dist < 2) return "🍂"; 
-            else if (dist < 3) return "🍁"; 
-            else if (dist < 4) return "❄️"; 
-            else return "⛄"; 
+            if (dist < 1) return "😡"; 
+            else if (dist < 2) return "😮"; 
+            else if (dist < 3) return "😐"; 
+            else if (dist < 4) return "🥶"; 
+            else return "😨"; 
         }
 
         function resetGame() {
