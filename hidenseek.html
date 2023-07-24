@@ -190,7 +190,7 @@
                         cell.addEventListener('click', () => {
                             score--;
                             let dist = distance(i, hiddenCell);
-                            cell.style.backgroundImage = `radial-gradient(circle at ${50*(hiddenCell % 5 - i % 5)}% ${50*(Math.floor(hiddenCell / 5) - Math.floor(i / 5))}%, ${getColor(dist)}, transparent)`;
+                            cell.style.backgroundImage = `linear-gradient(${Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * 180 / Math.PI}deg, ${getColor(dist)}, transparent)`;
                             if(i === hiddenCell) {
                                 totalScore += score;
                                 rounds++;
@@ -223,7 +223,7 @@
             cell.addEventListener('click', () => {
                 score--;
                 let dist = distance(i, hiddenCell);
-                cell.style.backgroundImage = `radial-gradient(circle at ${50*(hiddenCell % 5 - i % 5)}% ${50*(Math.floor(hiddenCell / 5) - Math.floor(i / 5))}%, ${getColor(dist)}, transparent)`;
+                cell.style.backgroundImage = `linear-gradient(${Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * 180 / Math.PI}deg, ${getColor(dist)}, transparent)`;
                 if(i === hiddenCell) {
                     totalScore += score;
                     rounds++;
