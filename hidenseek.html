@@ -151,9 +151,9 @@
 
         function getColor(dist) {
             let normalizedDist = dist / Math.sqrt(50); 
-            let r = Math.floor(normalizedDist * 255); 
+            let r = Math.floor(255 - normalizedDist * 255);  // Shading red toward the trophy
             let g = 0; 
-            let b = Math.floor((1 - normalizedDist) * 255); 
+            let b = Math.floor(255 - (1 - normalizedDist) * 255);  // Shading blue away from the trophy
 
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
