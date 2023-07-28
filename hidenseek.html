@@ -116,7 +116,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Welcome to Hide and Seek!</h2>
-            <p>In this game, you will have to find the hidden cell. The cell will change its color and emoji based on how close you are to the hidden cell. The color goes from red (very close) to blue (very far).</p>
+            <p>In this game, you will have to find the hidden cell. The cell will change its color and emoji based on how close you are to the hidden cell. The color goes from red hot (very close) to blue freezing cold (very far).</p>
             <p>Each time you click a cell, your score decreases. Your aim is to find the hidden cell with the highest score possible.</p>
             <p>Click anywhere outside this box to close it and start playing!</p>
             <p><strong>Tip:</strong> Pay close attention to the color and emoji clues to determine your distance from the trophy!</p>
@@ -151,9 +151,9 @@
 
         function getColor(dist) {
             let normalizedDist = dist / Math.sqrt(50); 
-            let r = Math.floor(255 - normalizedDist * 255);  // Shading red toward the trophy
+            let r = Math.floor(255 - normalizedDist * 255);  // Shading red hot toward the trophy
             let g = 0; 
-            let b = Math.floor(255 - (1 - normalizedDist) * 255);  // Shading blue away from the trophy
+            let b = Math.floor(255 - (1 - normalizedDist) * 255);  // Shading blue freezing cold away from the trophy
 
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
