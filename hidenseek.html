@@ -14,11 +14,18 @@
             width: 100vw; /* Full screen width */
             overflow: hidden; /* Hide scrollbars */
         }
+        #playbox {
+            width: 80vw; /* Playbox width */
+            height: 80vh; /* Playbox height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            width: 90%; /* 90% of grid width */
-            height: 90%; /* 90% of grid height */
+            width: 100%; /* Full grid width */
+            height: 100%; /* Full grid height */
         }
         .cell {
             border: none; /* No border */
@@ -32,8 +39,9 @@
     </style>
 </head>
 <body>
-    <div id="grid" class="grid"></div>
-
+    <div id="playbox">
+        <div id="grid" class="grid"></div>
+    </div>
     <script>
         const gridSize = 25;
         const hiddenCell = Math.floor(Math.random() * gridSize);
