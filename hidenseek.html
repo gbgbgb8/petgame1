@@ -15,13 +15,13 @@
             overflow: hidden; /* Hide scrollbars */
         }
         #playbox {
-            position: relative; /* Relative position */
-            width: 100%; /* Full playbox width */
-            height: 0; /* Set height to 0 */
-            padding-bottom: 100%; /* Make playbox square */
+            max-width: 80vw; /* 80% of viewport width */
+            max-height: 80vh; /* 80% of viewport height */
+            width: 100%;
+            height: 100%;
+            border: 2px solid black; /* Black border */
         }
         .grid {
-            position: absolute; /* Absolute position */
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-auto-rows: 1fr; /* Auto rows */
