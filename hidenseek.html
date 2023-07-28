@@ -16,24 +16,25 @@
             width: 100vw; /* Full screen width */
             overflow: hidden; /* Hide scrollbars */
         }
-        #scoreboard {
+        .control-panel {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            width: 80vmin; /* Match the width of the playbox */
-            margin-bottom: 20px; /* Add some space below the scoreboard */
-            background-color: #ffffff;
-            padding: 10px;
+            justify-content: space-between;
+            width: 80vmin;
+        }
+        #scoreboard, #game-controls {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
             border-radius: 10px;
+            background-color: #ffffff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-        #scoreboard div {
+        #scoreboard div, #game-controls div {
             margin: 5px 0;
             font-size: 18px;
             color: #333333;
         }
-        #restart {
+        .button {
             margin-top: 10px;
             padding: 5px 10px;
             background-color: #f0f0f0;
@@ -80,11 +81,17 @@
     </style>
 </head>
 <body>
-    <div id="scoreboard">
-        <div id="score">Score: 25</div>
-        <div id="games-played">Games Played: 0</div>
-        <div id="total-points">Total Points: 0</div>
-        <button id="restart">Restart</button>
+    <div class="control-panel">
+        <div id="scoreboard">
+            <div id="score">Score: 25</div>
+            <div id="games-played">Games Played: 0</div>
+            <div id="total-points">Total Points: 0</div>
+        </div>
+        <div id="game-controls">
+            <div>Game Controls:</div>
+            <button class="button" id="restart">Restart</button>
+            <button class="button" id="reload">Reload</button>
+        </div>
     </div>
     <div id="playbox">
         <div id="grid" class="grid"></div>
@@ -155,6 +162,11 @@
             overlay.style.visibility = 'hidden';
             updateScoreboard();
         }
+
+        // Reload the page
+        document.getElementById('reload').addEventListener('click', function() {
+            location.reload();
+        });
 
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
