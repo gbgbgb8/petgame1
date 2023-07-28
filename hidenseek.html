@@ -8,11 +8,18 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             width: 100vw; /* Full screen width */
             overflow: hidden; /* Hide scrollbars */
+        }
+        #scoreboard {
+            display: flex;
+            justify-content: space-around;
+            width: 80vmin; /* Match the width of the playbox */
+            margin-bottom: 20px; /* Add some space below the scoreboard */
         }
         #playbox {
             width: 80vmin; /* 80% of the smallest viewport dimension */
@@ -38,12 +45,21 @@
     </style>
 </head>
 <body>
+    <div id="scoreboard">
+        <div id="score">Score: 0</div>
+        <div id="games-played">Games Played: 0</div>
+        <div id="total-points">Total Points: 0</div>
+        <button id="restart">Restart</button>
+    </div>
     <div id="playbox">
         <div id="grid" class="grid"></div>
     </div>
     <script>
+        let score = 0;
+        let gamesPlayed = 0;
+        let totalPoints = 0;
         const gridSize = 25;
-        const hiddenCell = Math.floor(Math.random() * gridSize);
+        let hiddenCell = Math.floor(Math.random() * gridSize);
         const grid = document.getElementById('grid');
 
         // Calculate distance between two cells
@@ -78,6 +94,25 @@
             else return "🧊"; // Cool
         }
 
+        // Update the scoreboard
+        function updateScoreboard() {
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('games-played').textContent = `Games Played: ${gamesPlayed}`;
+            document.getElementById('total-points').textContent = `Total Points: ${totalPoints}`;
+        }
+
+        // Restart the game
+        document.getElementById('restart').addEventListener('click', () => {
+            score = 0;
+            hiddenCell = Math.floor(Math.random() * gridSize);
+            const cells = document.getElementsByClassName('cell');
+            for (let i = 0; i < cells.length; i++) {
+                cells[i].style.backgroundColor = '';
+                cells[i].textContent = '';
+            }
+            updateScoreboard();
+        });
+
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
@@ -89,8 +124,14 @@
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
                     alert('Congratulations! You found it!');
+                    gamesPlayed += 1;
+                    totalPoints += score;
+                    score = 0;
+                    hiddenCell = Math.floor(Math.random() * gridSize);
+                    updateScoreboard();
                 } else {
                     cell.textContent = getEmoji(dist);
+                    score += 1;
                 }
             });
 
@@ -103,6 +144,7 @@
             for (let i = 0; i < cells.length; i++) {
                 cells[i].style.height = getComputedStyle(cells[i]).width;
             }
+            updateScoreboard();
         };
     </script>
 </body>
