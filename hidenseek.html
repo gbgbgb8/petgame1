@@ -5,6 +5,7 @@
     <style>
         body {
             background-color: #add8e6; /* Light blue background */
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,9 +18,29 @@
         }
         #scoreboard {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: space-around;
             width: 80vmin; /* Match the width of the playbox */
             margin-bottom: 20px; /* Add some space below the scoreboard */
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #scoreboard div {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #333333;
+        }
+        #restart {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
         }
         #playbox {
             position: relative; /* Relative position for overlay */
