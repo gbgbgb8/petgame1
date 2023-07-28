@@ -78,6 +78,19 @@
             user-select: none;
             font-size: 5vmin; /* Bigger emoji size */
         }
+        #overlay-text {
+            text-align: center;
+            line-height: 1.5;
+        }
+        #overlay-text .big {
+            font-size: 6vmin;
+        }
+        #overlay-text .medium {
+            font-size: 5vmin;
+        }
+        #overlay-text .small {
+            font-size: 4vmin;
+        }
     </style>
 </head>
 <body>
@@ -133,12 +146,11 @@
 
         // Get emoji based on distance
         function getEmoji(dist) {
-    if (dist < 1.5) return "🔥"; // Fire
-    else if (dist < 2.5) return "🥵"; // Hot
-    else if (dist < 3.5) return "❄️"; // Cold
-    else return "🧊"; // Very Cold
-}
-
+            if (dist < 1.5) return "🔥"; // Fire
+            else if (dist < 2.5) return "🥵"; // Hot
+            else if (dist < 3.5) return "❄️"; // Cold
+            else return "🧊"; // Very Cold
+        }
 
         // Update the scoreboard
         function updateScoreboard() {
@@ -181,14 +193,24 @@
                     totalPoints += score;
                     overlay.style.visibility = 'visible';
                     let countdown = 3;
-                    overlayText.textContent = `Congratulations! You found it! New game starts in ${countdown}...`;
+                    overlayText.innerHTML = `
+                        <span class="big">🎉🎊🥳🎈</span><br>
+                        <span class="medium">Congratulations! You found it!</span><br>
+                        <span class="small">New game starts in ${countdown}...</span><br>
+                        <span class="big">🎉🎊🥳🎈</span>
+                    `;
                     let countdownTimer = setInterval(function() {
                         countdown -= 1;
                         if (countdown <= 0) {
                             clearInterval(countdownTimer);
                             restartGame();
                         } else {
-                            overlayText.textContent = `Congratulations! You found it! New game starts in ${countdown}...`;
+                            overlayText.innerHTML = `
+                                <span class="big">🎉🎊🥳🎈</span><br>
+                                <span class="medium">Congratulations! You found it!</span><br>
+                                <span class="small">New game starts in ${countdown}...</span><br>
+                                <span class="big">🎉🎊🥳🎈</span>
+                            `;
                         }
                     }, 1000);
                 } else {
