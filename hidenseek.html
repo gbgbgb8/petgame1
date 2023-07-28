@@ -22,9 +22,23 @@
             margin-bottom: 20px; /* Add some space below the scoreboard */
         }
         #playbox {
+            position: relative; /* Relative position for overlay */
             width: 80vmin; /* 80% of the smallest viewport dimension */
             height: 80vmin; /* 80% of the smallest viewport dimension */
             border: 2px solid black; /* Black border */
+        }
+        .overlay {
+            position: absolute; /* Absolute position for overlay */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5vmin;
+            visibility: hidden; /* Hidden by default */
         }
         .grid {
             display: grid;
@@ -53,6 +67,9 @@
     </div>
     <div id="playbox">
         <div id="grid" class="grid"></div>
+        <div id="overlay" class="overlay">
+            <span id="overlay-text"></span>
+        </div>
     </div>
     <script>
         let score = 0;
@@ -61,6 +78,8 @@
         const gridSize = 25;
         let hiddenCell = Math.floor(Math.random() * gridSize);
         const grid = document.getElementById('grid');
+        const overlay = document.getElementById('overlay');
+        const overlayText = document.getElementById('overlay-text');
 
         // Calculate distance between two cells
         function distance(cell1, cell2) {
@@ -102,7 +121,9 @@
         }
 
         // Restart the game
-        document.getElementById('restart').addEventListener('click', () => {
+        document.getElementById('restart').addEventListener('click', restartGame);
+
+        function restartGame() {
             score = 0;
             hiddenCell = Math.floor(Math.random() * gridSize);
             const cells = document.getElementsByClassName('cell');
@@ -110,8 +131,9 @@
                 cells[i].style.backgroundColor = '';
                 cells[i].textContent = '';
             }
+            overlay.style.visibility = 'hidden';
             updateScoreboard();
-        });
+        }
 
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
@@ -123,12 +145,21 @@
                 
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
-                    alert('Congratulations! You found it!');
                     gamesPlayed += 1;
                     totalPoints += score;
                     score = 0;
-                    hiddenCell = Math.floor(Math.random() * gridSize);
-                    updateScoreboard();
+                    overlay.style.visibility = 'visible';
+                    let countdown = 3;
+                    overlayText.textContent = `Congratulations! You found it! New game starts in ${countdown}...`;
+                    let countdownTimer = setInterval(function() {
+                        countdown -= 1;
+                        if (countdown <= 0) {
+                            clearInterval(countdownTimer);
+                            restartGame();
+                        } else {
+                            overlayText.textContent = `Congratulations! You found it! New game starts in ${countdown}...`;
+                        }
+                    }, 1000);
                 } else {
                     cell.textContent = getEmoji(dist);
                     score += 1;
