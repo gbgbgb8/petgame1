@@ -133,13 +133,12 @@
 
         // Get emoji based on distance
         function getEmoji(dist) {
-            if (dist < 1) return "🔥"; // Fire
-            else if (dist < 2) return "🥵"; // Hot
-            else if (dist < 3) return "🥵"; // Warm
-            else if (dist < 4) return "🧊"; // Frozen
-            else if (dist < 5) return "❄️"; // Cold
-            else return "🧊"; // Cool
-        }
+    if (dist < 1.5) return "🔥"; // Fire
+    else if (dist < 2.5) return "🥵"; // Hot
+    else if (dist < 3.5) return "❄️"; // Cold
+    else return "🧊"; // Very Cold
+}
+
 
         // Update the scoreboard
         function updateScoreboard() {
