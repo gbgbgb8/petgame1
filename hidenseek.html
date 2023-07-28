@@ -72,7 +72,7 @@
         </div>
     </div>
     <script>
-        let score = 0;
+        let score = 25;
         let gamesPlayed = 0;
         let totalPoints = 0;
         const gridSize = 25;
@@ -124,7 +124,7 @@
         document.getElementById('restart').addEventListener('click', restartGame);
 
         function restartGame() {
-            score = 0;
+            score = 25;
             hiddenCell = Math.floor(Math.random() * gridSize);
             const cells = document.getElementsByClassName('cell');
             for (let i = 0; i < cells.length; i++) {
@@ -147,7 +147,7 @@
                     cell.textContent = "🏆"; // Trophy for winning cell
                     gamesPlayed += 1;
                     totalPoints += score;
-                    score = 0;
+                    score = 25;
                     overlay.style.visibility = 'visible';
                     let countdown = 3;
                     overlayText.textContent = `Congratulations! You found it! New game starts in ${countdown}...`;
@@ -162,7 +162,7 @@
                     }, 1000);
                 } else {
                     cell.textContent = getEmoji(dist);
-                    score += 1;
+                    score -= 1;
                 }
             });
 
