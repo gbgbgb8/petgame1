@@ -26,6 +26,13 @@
             justify-content: center;
             cursor: pointer;
             user-select: none;
+            border-radius: 15px; /* Rounded corners */
+            transition: background-color 0.5s ease; /* Smooth color transition */
+        }
+        /* Hover effect */
+        .cell:hover {
+            transform: scale(1.1); 
+            transition: transform 0.5s ease;
         }
     </style>
 </head>
@@ -56,7 +63,8 @@
             let g = 0; // Green is always 0
             let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
 
-            return 'rgb(' + r + ',' + g + ',' + b + ')';
+            // Gradient color
+            return `linear-gradient(to right, rgb(${r},${g},${b}), rgb(${255 - r},${255 - g},${255 - b}))`;
         }
 
         // Get emoji based on distance
@@ -75,7 +83,7 @@
             cell.textContent = i + 1;
             cell.addEventListener('click', () => {
                 let dist = distance(i, hiddenCell);
-                cell.style.backgroundColor = getColor(dist);
+                cell.style.background = getColor(dist); // Change to gradient color
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
                     alert('Congratulations! You found it!');
