@@ -54,7 +54,7 @@
         }
 
         // Calculate color based on distance
-        function getColor(dist) {
+        function getColor(dist, direction) {
             // Normalize the distance (0 to 1)
             let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
             
@@ -63,7 +63,7 @@
             let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
 
             // Gradient color
-            return `linear-gradient(to right, rgb(${r},${g},${b}), rgb(${255 - r},${255 - g},${255 - b}))`;
+            return `linear-gradient(${direction}deg, rgb(${255 - r},${255 - g},${255 - b}), rgb(${r},${g},${b}))`;
         }
 
         // Get emoji based on distance
@@ -76,28 +76,25 @@
             else return "🧊"; // Cool
         }
 
-        let cells = [];
-
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             cell.textContent = i + 1;
 
             cell.addEventListener('click', () => {
+                let dist = distance(i, hiddenCell);
+                let direction = Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * (180 / Math.PI);
+                cell.style.background = getColor(dist, direction); // Set gradient color based on distance and direction
+                
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
                     alert('Congratulations! You found it!');
                 } else {
-                    cell.textContent = getEmoji(distance(i, hiddenCell));
+                    cell.textContent = getEmoji(dist);
                 }
-                // Update heatmap for all cells
-                cells.forEach((cell, index) => {
-                    cell.style.background = getColor(distance(index, hiddenCell));
-                });
             });
 
             grid.appendChild(cell);
-            cells.push(cell);
         }
     </script>
 </body>
