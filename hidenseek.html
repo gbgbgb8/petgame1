@@ -18,8 +18,10 @@
         }
         .control-panel {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            width: 80vmin;
+            width: 90vw;
+            max-width: 500px; /* Maximum width */
         }
         #scoreboard, #game-controls {
             flex: 1;
@@ -45,9 +47,12 @@
         }
         #playbox {
             position: relative; /* Relative position for overlay */
-            width: 80vmin; /* 80% of the smallest viewport dimension */
-            height: 80vmin; /* 80% of the smallest viewport dimension */
+            width: 90vw; /* 90% of viewport width */
+            height: 90vw; /* Keep it square */
+            max-width: 500px; /* Maximum width */
+            max-height: 500px; /* Maximum height */
             border: 2px solid black; /* Black border */
+            margin: 20px auto;
         }
         .overlay {
             position: absolute; /* Absolute position for overlay */
@@ -107,6 +112,31 @@
         }
         .score-change {
             animation: scoreChange 0.5s;
+        }
+        /* Medium devices (tablets) */
+        @media (min-width: 600px) {
+            .control-panel {
+                flex-direction: row;
+                max-width: 900px; /* Maximum width */
+            }
+            #playbox {
+                width: 80vmin; /* 80% of the smallest viewport dimension */
+                height: 80vmin; /* Keep it square */
+                max-width: 900px; /* Maximum width */
+                max-height: 900px; /* Maximum height */
+            }
+        }
+        /* Large devices (laptops, desktops) */
+        @media (min-width: 900px) {
+            .control-panel {
+                max-width: none; /* No maximum width */
+            }
+            #playbox {
+                width: 80vmin; /* 80% of the smallest viewport dimension */
+                height: 80vmin; /* Keep it square */
+                max-width: none; /* No maximum width */
+                max-height: none; /* No maximum height */
+            }
         }
     </style>
 </head>
