@@ -17,9 +17,10 @@
             grid-template-columns: repeat(5, 1fr);
             gap: 1vw;
             width: 80%;
+            height: 80vh; /* Adjust grid height */
         }
         .cell {
-            height: 15vw;
+            height: 15vh; /* Adjust cell height */
             border: 1px solid #000;
             display: flex;
             align-items: center;
@@ -28,7 +29,7 @@
             user-select: none;
             border-radius: 15px; /* Rounded corners */
             transition: transform 0.5s ease, background 0.5s ease; /* Smooth hover effect and color transition */
-            font-size: 2vw; /* Responsive font size */
+            font-size: 2vh; /* Responsive font size */
         }
         /* Hover effect */
         .cell:hover {
@@ -38,10 +39,11 @@
         @media (max-width: 600px) {
             .grid {
                 width: 90%;
+                height: 90vh; /* Adjust grid height */
             }
             .cell {
-                height: 10vw;
-                font-size: 3vw; /* Increase font size for better visibility */
+                height: 15vh; /* Adjust cell height */
+                font-size: 3vh; /* Increase font size for better visibility */
             }
         }
     </style>
