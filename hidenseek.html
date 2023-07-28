@@ -11,40 +11,23 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw; /* Full screen width */
+            overflow: hidden; /* Hide scrollbars */
         }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 1vw;
-            width: 80%;
-            height: 80vh; /* Adjust grid height */
+            width: 100%; /* Full grid width */
+            height: 100%; /* Full grid height */
         }
         .cell {
-            height: 15vh; /* Adjust cell height */
-            border: 1px solid #000;
+            border: none; /* No border */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            border-radius: 15px; /* Rounded corners */
-            transition: transform 0.5s ease, background 0.5s ease; /* Smooth hover effect and color transition */
             font-size: 10vh; /* Bigger emoji size */
-        }
-        /* Hover effect */
-        .cell:hover {
-            transform: scale(1.1);
-        }
-        /* Adjust for smaller devices */
-        @media (max-width: 600px) {
-            .grid {
-                width: 90%;
-                height: 90vh; /* Adjust grid height */
-            }
-            .cell {
-                height: 15vh; /* Adjust cell height */
-                font-size: 10vh; /* Maintain emoji size */
-            }
         }
     </style>
 </head>
