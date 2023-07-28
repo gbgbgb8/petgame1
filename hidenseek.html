@@ -15,10 +15,8 @@
             overflow: hidden; /* Hide scrollbars */
         }
         #playbox {
-            max-width: 80vw; /* 80% of viewport width */
-            max-height: 80vh; /* 80% of viewport height */
-            width: 100%;
-            height: 100%;
+            width: 80vmin; /* 80% of the smallest viewport dimension */
+            height: 80vmin; /* 80% of the smallest viewport dimension */
             border: 2px solid black; /* Black border */
         }
         .grid {
@@ -35,8 +33,7 @@
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            font-size: 5vw; /* Bigger emoji size */
-            aspect-ratio: 1 / 1; /* Make cells square */
+            font-size: 5vmin; /* Bigger emoji size */
         }
     </style>
 </head>
@@ -99,6 +96,14 @@
 
             grid.appendChild(cell);
         }
+
+        // Ensure cells are squares by setting their height equal to their computed width
+        window.onload = function() {
+            const cells = document.getElementsByClassName('cell');
+            for (let i = 0; i < cells.length; i++) {
+                cells[i].style.height = getComputedStyle(cells[i]).width;
+            }
+        };
     </script>
 </body>
 </html>
