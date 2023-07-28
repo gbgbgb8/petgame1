@@ -54,7 +54,7 @@
         }
 
         // Calculate color based on distance
-        function getColor(dist, direction) {
+        function getColor(dist) {
             // Normalize the distance (0 to 1)
             let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
             
@@ -62,8 +62,7 @@
             let g = 0; // Green is always 0
             let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
 
-            // Gradient color
-            return `linear-gradient(${direction + 180}deg, rgb(${r},${g},${b}), rgb(${255 - r},${255 - g},${255 - b}))`;
+            return `rgb(${r},${g},${b})`;
         }
 
         // Get emoji based on distance
@@ -83,8 +82,7 @@
 
             cell.addEventListener('click', () => {
                 let dist = distance(i, hiddenCell);
-                let direction = Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * (180 / Math.PI);
-                cell.style.background = getColor(dist, direction); // Set gradient color based on distance and direction
+                cell.style.backgroundColor = getColor(dist); // Set color based on distance
                 
                 if(i === hiddenCell) {
                     cell.textContent = "🏆"; // Trophy for winning cell
