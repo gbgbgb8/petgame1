@@ -3,9 +3,22 @@
 <head>
     <title>Hide and Seek</title>
     <style>
+        :root {
+            --color-primary: #5c6ac4;
+            --color-secondary: #007ace;
+            --color-background: #f3f4f6;
+            --color-text: #303133;
+            --color-text-light: #606266;
+            --color-border: #dcdfe6;
+            --color-success: #67c23a;
+            --color-danger: #f56c6c;
+            --color-info: #909399;
+            --spacing: 16px;
+        }
         body {
-            background-color: #add8e6; /* Light blue background */
+            background-color: var(--color-background);
             font-family: Arial, sans-serif;
+            color: var(--color-text);
             margin: 0;
             padding: 0;
             display: flex;
@@ -13,152 +26,89 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            width: 100vw; /* Full screen width */
-            overflow: hidden; /* Hide scrollbars */
+            width: 100vw;
         }
         .control-panel {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing);
             width: 90vw;
-            max-width: 500px; /* Maximum width */
+            max-width: 600px;
+            padding: var(--spacing);
         }
-        #scoreboard, #game-controls {
-            flex: 1;
-            margin: 10px;
-            padding: 20px;
+        .panel {
+            width: 100%;
+            padding: var(--spacing);
             border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
         }
-        #scoreboard div, #game-controls div {
-            margin: 5px 0;
-            font-size: 18px;
-            color: #333333;
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing);
+        }
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing);
         }
         .button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #f0f0f0;
+            padding: 10px 20px;
+            background-color: var(--color-primary);
+            color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: var(--color-secondary);
+        }
+        .button:active {
+            background-color: var(--color-primary);
         }
         #playbox {
-            position: relative; /* Relative position for overlay */
-            width: 90vw; /* 90% of viewport width */
-            height: 90vw; /* Keep it square */
-            max-width: 500px; /* Maximum width */
-            max-height: 500px; /* Maximum height */
-            border: 2px solid black; /* Black border */
-            margin: 20px auto;
-        }
-        .overlay {
-            position: absolute; /* Absolute position for overlay */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 5vmin;
-            visibility: hidden; /* Hidden by default */
-        }
-        .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            grid-auto-rows: 1fr; /* Auto rows */
-            width: 100%; /* Full grid width */
-            height: 100%; /* Full grid height */
+            grid-gap: var(--spacing);
+            width: 100%;
+            padding: var(--spacing);
+            max-width: 600px;
+            max-height: 600px;
         }
         .cell {
-            border: none; /* No border */
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: var(--spacing);
+            background-color: #fff;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
             cursor: pointer;
             user-select: none;
-            font-size: 5vmin; /* Bigger emoji size */
-            transition: background-color 0.5s ease; /* Transition for color change */
-        }
-        #overlay-text {
-            text-align: center;
-            line-height: 1.5;
-        }
-        #overlay-text .big {
-            font-size: 6vmin;
-        }
-        #overlay-text .medium {
-            font-size: 5vmin;
-        }
-        #overlay-text .small {
-            font-size: 4vmin;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        .pulse {
-            animation: pulse 1s infinite;
-        }
-        @keyframes scoreChange {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .score-change {
-            animation: scoreChange 0.5s;
-        }
-        /* Medium devices (tablets) */
-        @media (min-width: 600px) {
-            .control-panel {
-                flex-direction: row;
-                max-width: 900px; /* Maximum width */
-            }
-            #playbox {
-                width: 80vmin; /* 80% of the smallest viewport dimension */
-                height: 80vmin; /* Keep it square */
-                max-width: 900px; /* Maximum width */
-                max-height: 900px; /* Maximum height */
-            }
-        }
-        /* Large devices (laptops, desktops) */
-        @media (min-width: 900px) {
-            .control-panel {
-                max-width: none; /* No maximum width */
-            }
-            #playbox {
-                width: 80vmin; /* 80% of the smallest viewport dimension */
-                height: 80vmin; /* Keep it square */
-                max-width: none; /* No maximum width */
-                max-height: none; /* No maximum height */
-            }
+            font-size: 1.5rem;
+            transition: background-color 0.5s ease;
         }
     </style>
 </head>
 <body>
     <div class="control-panel">
-        <div id="scoreboard">
+        <div class="panel scoreboard">
             <div id="score">Score: 25</div>
             <div id="games-played">Games Played: 0</div>
             <div id="total-points">Total Points: 0</div>
         </div>
-        <div id="game-controls">
-            <div>Game Controls:</div>
+        <div class="panel game-controls">
             <button class="button" id="restart">Restart</button>
             <button class="button" id="reload">Reload</button>
         </div>
     </div>
-    <div id="playbox">
-        <div id="grid" class="grid"></div>
-        <div id="overlay" class="overlay">
-            <span id="overlay-text"></span>
-        </div>
-    </div>
+    <div id="playbox"></div>
     <script>
         let score = 25;
         let gamesPlayed = 0;
