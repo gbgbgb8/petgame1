@@ -63,7 +63,7 @@
             let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
 
             // Gradient color
-            return `linear-gradient(${direction}deg, rgb(${255 - r},${255 - g},${255 - b}), rgb(${r},${g},${b}))`;
+            return `linear-gradient(${direction + 180}deg, rgb(${r},${g},${b}), rgb(${255 - r},${255 - g},${255 - b}))`;
         }
 
         // Get emoji based on distance
