@@ -4,142 +4,40 @@
     <title>Hide and Seek</title>
     <style>
         body {
-            background-color: #add8e6;
+            background-color: #add8e6; /* Light blue background */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-        }
-        .scoreboard {
-            margin-bottom: 20px;
-            font-size: 20px;
-            border: 1px solid #000;
-            padding: 10px;
-            max-width: 500px;
-            width: 90vw;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        }
-        #reset {
-            margin-left: 10px;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 5px;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
         .grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            width: 90vw;
-            max-width: 500px;
-            padding: 5vw;
-            border: 3px solid #000;
-            gap: 0;
+            gap: 10px;
+            width: 80%;
         }
         .cell {
-            height: 16vw;
+            height: 50px;
+            border: 1px solid #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            user-select: none;
-            font-size: 12vw;
-            color: #444;
-            transition: background-color 0.2s;
-            border-radius: 50%;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 100px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-            border-radius: 5px;
-        }
-        .close {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
             cursor: pointer;
-        }
-        @media (min-width: 600px) {
-            .grid {
-                width: 500px;  
-                padding: 10px;
-            }
-            .cell {
-                height: 90px;
-                font-size: 50px;
-            }
-            .scoreboard {
-                width: 500px;
-            }
+            user-select: none;
         }
     </style>
 </head>
 <body>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Welcome to Hide and Seek!</h2>
-            <p>In this game, you will have to find the hidden cell. The cell will change its color and emoji based on how close you are to the hidden cell. The color goes from red hot (very close) to blue freezing cold (very far).</p>
-            <p>Each time you click a cell, your score decreases. Your aim is to find the hidden cell with the highest score possible.</p>
-            <p>Click anywhere outside this box to close it and start playing!</p>
-            <p><strong>Tip:</strong> Pay close attention to the color and emoji clues to determine your distance from the trophy!</p>
-        </div>
-    </div>
-    <div id="scoreboard" class="scoreboard">
-        <div id="score"></div>
-        <button id="reset">Play Again</button>
-    </div>
     <div id="grid" class="grid"></div>
 
     <script>
         const gridSize = 25;
-        let hiddenCell = Math.floor(Math.random() * gridSize);
-        let score = gridSize; 
-        let totalScore = 0; 
-        let rounds = 0; 
+        const hiddenCell = Math.floor(Math.random() * gridSize);
         const grid = document.getElementById('grid');
-        const scoreElement = document.getElementById('score');
-        const resetButton = document.getElementById('reset');
 
-        scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
-
+        // Calculate distance between two cells
         function distance(cell1, cell2) {
             let x1 = cell1 % 5;
             let y1 = Math.floor(cell1 / 5);
@@ -149,87 +47,38 @@
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         }
 
+        // Calculate color based on distance
         function getColor(dist) {
-            let normalizedDist = dist / Math.sqrt(50); 
-            let r = Math.floor(255 - normalizedDist * 255);  // Shading red hot toward the trophy
-            let g = 0; 
-            let b = Math.floor(255 - (1 - normalizedDist) * 255);  // Shading blue freezing cold away from the trophy
+            // Normalize the distance (0 to 1)
+            let normalizedDist = dist / Math.sqrt(50); // max distance in a 5x5 grid
+            
+            let r = Math.floor((1 - normalizedDist) * 255); // Red decreases with normalized distance
+            let g = 0; // Green is always 0
+            let b = Math.floor(normalizedDist * 255); // Blue increases with normalized distance
 
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
 
+        // Get emoji based on distance
         function getEmoji(dist) {
-            if (dist < 1) return "😡"; 
-            else if (dist < 2) return "😮"; 
-            else if (dist < 3) return "😐"; 
-            else if (dist < 4) return "🥶"; 
-            else return "😨"; 
-        }
-
-        function resetGame() {
-            if (grid.classList.contains('resetting')) {
-                return;
-            }
-
-            grid.classList.add('resetting');
-
-            let countdown = 5;
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: ${countdown}`;
-                if (countdown === 0) {
-                    clearInterval(countdownInterval);
-                    hiddenCell = Math.floor(Math.random() * gridSize);
-                    score = gridSize;
-                    while (grid.firstChild) {
-                        grid.removeChild(grid.firstChild);
-                    }
-                    for(let i = 0; i < gridSize; i++) {
-                        const cell = document.createElement('div');
-                        cell.className = 'cell';
-                        cell.textContent = '';
-                        cell.addEventListener('click', () => {
-                            score--;
-                            let dist = distance(i, hiddenCell);
-                            cell.style.backgroundImage = `linear-gradient(${Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * 180 / Math.PI}deg, ${getColor(dist)}, transparent)`;
-                            if(i === hiddenCell) {
-                                totalScore += score;
-                                rounds++;
-                                cell.textContent = "🏆";
-                                resetGame();
-                            } else {
-                                cell.textContent = getEmoji(dist);
-                            }
-                            cell.removeEventListener('click', arguments.callee);
-                        });
-
-                        grid.appendChild(cell);
-                    }
-                    scoreElement.textContent = `Round: ${rounds}, Score: ${totalScore}, Next round in: 0`;
-                    grid.classList.remove('resetting');
-                }
-            }, 1000);
-        }
-
-        function restartGame() {
-            totalScore = 0;
-            rounds = 0;
-            resetGame();
+            if (dist < 1) return "🔥"; // Fire
+            else if (dist < 2) return "🥵"; // Hot
+            else if (dist < 3) return "🥵"; // Warm
+            else if (dist < 4) return "🧊"; // Frozen
+            else if (dist < 5) return "❄️"; // Cold
+            else return "🧊"; // Cool
         }
 
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.textContent = '';
+            cell.textContent = i + 1;
             cell.addEventListener('click', () => {
-                score--;
                 let dist = distance(i, hiddenCell);
-                cell.style.backgroundImage = `linear-gradient(${Math.atan2(hiddenCell % 5 - i % 5, Math.floor(hiddenCell / 5) - Math.floor(i / 5)) * 180 / Math.PI}deg, ${getColor(dist)}, transparent)`;
+                cell.style.backgroundColor = getColor(dist);
                 if(i === hiddenCell) {
-                    totalScore += score;
-                    rounds++;
-                    cell.textContent = "🏆";
-                    resetGame();
+                    cell.textContent = "🏆"; // Trophy for winning cell
+                    alert('Congratulations! You found it!');
                 } else {
                     cell.textContent = getEmoji(dist);
                 }
@@ -237,21 +86,6 @@
             });
 
             grid.appendChild(cell);
-        }
-
-        resetButton.addEventListener('click', restartGame);
-
-        const modal = document.getElementById('myModal');
-        const closeModal = document.getElementsByClassName('close')[0];
-        modal.style.display = "block";
-        
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-        }
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
         }
     </script>
 </body>
