@@ -147,12 +147,14 @@
                 max-height: 90vw;
             }
             .instructions-overlay {
-                max-width: 90vw;
-                max-height: 90vh;
-            }
-            .instructions-text {
-                font-size: 1rem;
-            }
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto; /* Add vertical scrolling */
+    }
+
+    .instructions-text {
+        font-size: 1.2rem; /* Adjust the font size for better fit */
+    }
         }
     </style>
 </head>
@@ -177,7 +179,6 @@
         <div class="countdown" id="countdown">Next round starts in 3...</div>
     </div>
 
-    <!-- New overlay element for instructions -->
     <div class="overlay" id="instructions-overlay" style="display: none;">
         <div class="instructions-overlay">
             <div class="overlay-text">
@@ -197,13 +198,13 @@
                         <li>The emojis inside the cells also indicate your proximity to the trophy. The emojis change as you get closer or farther away.</li>
                     </ul>
                     <p>5. Fun Celebration: When you find the trophy, a fun celebration overlay will appear, congratulating you on your discovery. The next round will automatically start after a brief countdown.</p>
+                    <!-- Updated dismiss button with clearer text -->
+                    <button class="button dismiss-button" id="close-instructions">Got it!</button>
                 </div>
-                <!-- Updated dismiss button with clearer text -->
-                <button class="button dismiss-button" id="close-instructions">Got it!</button>
             </div>
         </div>
     </div>
-    
+
     <script>
         let score = 25;
         let gamesPlayed = 0;
