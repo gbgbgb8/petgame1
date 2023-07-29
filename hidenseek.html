@@ -82,9 +82,7 @@
             max-height: 600px;
         }
         .cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     background-color: #fff;
     border-radius: 4px;
     border: 1px solid var(--color-border);
@@ -92,13 +90,12 @@
     user-select: none;
     font-size: 3rem; /* Adjust the font size here */
     transition: background-color 0.5s ease;
-    height: 0;
-    padding-bottom: 100%; /* Set the padding-bottom to 100% */
-    /* Add the following properties to center the emoji */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* Remove height and padding-bottom properties to maintain original cell size */
+    display: flex; /* Enable flexbox for the cell */
+    align-items: center; /* Center the content vertically */
+    justify-content: center; /* Center the content horizontally */
 }
+
 
 
     </style>
