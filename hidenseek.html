@@ -82,6 +82,7 @@
             max-height: 600px;
         }
         .cell {
+            /* Remove the height and padding properties */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,13 +93,17 @@
             user-select: none;
             font-size: 3rem; /* Adjust the font size here */
             transition: background-color 0.5s ease;
-            height: 0;
-            padding-bottom: calc(100% - 2 * var(--spacing));
-            /* Add the following properties to center the emoji */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
+            position: relative; /* Add a relative position */
+        }
+        .cell::before {
+            content: "";
+            padding-top: 100%; /* 1:1 aspect ratio (square) */
+        }
+        .cell > * {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
