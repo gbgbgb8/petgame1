@@ -133,6 +133,34 @@
             font-size: 1.8rem; /* Adjust the font size here for better fit on smaller screens */
         }
 
+        /* New styles for the instructions popup */
+        .instructions-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: var(--spacing);
+            border-radius: 10px;
+            box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto; /* Add vertical scrolling */
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .instructions-popup-content {
+            text-align: center;
+        }
+
+        .instructions-popup h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
         /* Adjust styles for mobile devices */
         @media (max-width: 768px) {
             .control-panel {
@@ -145,32 +173,6 @@
                 font-size: 2.5rem;
                 max-width: 90vw;
                 max-height: 90vw;
-            }
-            .popup {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: #fff;
-                padding: var(--spacing);
-                border-radius: 10px;
-                box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.2);
-                z-index: 999;
-                max-width: 90vw;
-                max-height: 90vh;
-                overflow-y: auto; /* Add vertical scrolling */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .popup-content {
-                text-align: center;
-            }
-
-            .popup h2 {
-                font-size: 1.8rem;
-                margin-bottom: 10px;
             }
         }
     </style>
@@ -196,9 +198,9 @@
         <div class="countdown" id="countdown">Next round starts in 3...</div>
     </div>
 
-    <!-- New popup container -->
-    <div class="popup" id="instructions-popup" style="display: none;">
-        <div class="popup-content">
+    <!-- New popup container for instructions -->
+    <div class="instructions-popup" id="instructions-popup">
+        <div class="instructions-popup-content">
             <h2>Instructions</h2>
             <div class="instructions-text">
                 <p>1. Objective: Find the hidden trophy in the grid of cells.</p>
