@@ -305,16 +305,16 @@
             }, 1000);
         }
 
-        // Show instructions overlay
+        // Show instructions popup
         document.getElementById('show-instructions').addEventListener('click', function() {
-            const instructionsOverlay = document.getElementById('instructions-overlay');
-            instructionsOverlay.style.display = 'flex';
+            const instructionsPopup = document.getElementById('instructions-popup');
+            instructionsPopup.style.display = 'flex';
         });
 
-        // Close instructions overlay
-        document.getElementById('close-instructions').addEventListener('click', function() {
-            const instructionsOverlay = document.getElementById('instructions-overlay');
-            instructionsOverlay.style.display = 'none';
+        // Close instructions popup
+        document.getElementById('close-instructions-popup').addEventListener('click', function() {
+            const instructionsPopup = document.getElementById('instructions-popup');
+            instructionsPopup.style.display = 'none';
         });
 
         for(let i = 0; i < gridSize; i++) {
