@@ -132,17 +132,27 @@
             color: #fff;
             font-size: 2rem;
         }
-        .instructions-overlay {
-            max-width: 80vw;
-            max-height: 80vh;
-            overflow: auto;
-        }
-        .instructions-text {
-            font-size: 1.2rem;
-            text-align: left;
-        }
-        .dismiss-button {
-            margin-top: 10px;
+
+        /* Adjust styles for mobile devices */
+        @media (max-width: 768px) {
+            .control-panel {
+                padding: 8px;
+            }
+            .button {
+                font-size: 0.9rem;
+            }
+            #playbox {
+                font-size: 2.5rem;
+                max-width: 90vw;
+                max-height: 90vw;
+            }
+            .instructions-overlay {
+                max-width: 90vw;
+                max-height: 90vh;
+            }
+            .instructions-text {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
