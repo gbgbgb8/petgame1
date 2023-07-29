@@ -185,25 +185,26 @@
             cell.className = 'cell';
 
             cell.addEventListener('click', () => {
-                clickCount++;
-                if (clickCount >= pulseThreshold) {
-                    document.getElementsByClassName('cell')[hiddenCell].classList.add('pulse');
-                }
+    clickCount++;
+    if (clickCount >= pulseThreshold) {
+        document.getElementsByClassName('cell')[hiddenCell].classList.add('pulse');
+    }
 
-                let dist = distance(i, hiddenCell);
-                cell.style.backgroundColor = getColor(dist); 
-                
-                if(i === hiddenCell) {
-                    cell.textContent = "🏆"; 
-                    gamesPlayed += 1;
-                    totalPoints += score;
-                    setTimeout(restartGame, 3000); 
-                } else {
-                    cell.textContent = getEmoji(dist);
-                    score -= 1;
-                    updateScoreboard();
-                }
-            });
+    let dist = distance(i, hiddenCell);
+    cell.style.backgroundColor = getColor(dist); 
+    
+    if(i === hiddenCell) {
+        cell.innerHTML = "<div style='display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;'>🏆<span style='font-size: 0.7rem;'>Tap to Restart</span></div>"; 
+        gamesPlayed += 1;
+        totalPoints += score;
+        setTimeout(restartGame, 3000); 
+    } else {
+        cell.innerHTML = `<div style='display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;'>${getEmoji(dist)}<span style='font-size: 0.7rem;'>Tap to Reveal</span></div>`;
+        score -= 1;
+        updateScoreboard();
+    }
+});
+
 
             grid.appendChild(cell);
         }
