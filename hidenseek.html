@@ -82,25 +82,48 @@
             max-height: 600px;
         }
         .cell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    user-select: none;
-    font-size: 3rem; /* Adjust the font size here */
-    transition: background-color 0.5s ease;
-    height: 0;
-    padding-bottom: 100%; /* Set the padding-bottom to 100% */
-    /* Add the following properties to center the emoji */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+            position: relative;
+            background-color: #fff;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            user-select: none;
+            font-size: 3rem; /* Adjust the font size here */
+            transition: background-color 0.5s ease;
+        }
 
+        /* Styles for the before pseudo-element */
+        .cell:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background-image: none;
+            background-size: contain;
+        }
 
+        /* Set the emoji based on distance using the "content" property of the before pseudo-element */
+        .cell.distance-1:before {
+            content: "🔥";
+        }
+
+        .cell.distance-2:before {
+            content: "🥵";
+        }
+
+        .cell.distance-3:before {
+            content: "❄️";
+        }
+
+        .cell.distance-4:before {
+            content: "🧊";
+        }
     </style>
 </head>
 <body>
@@ -172,6 +195,7 @@
             const cells = document.getElementsByClassName('cell');
             for (let i = 0; i < cells.length; i++) {
                 cells[i].style.backgroundColor = '';
+                cells[i].classList.remove('distance-1', 'distance-2', 'distance-3', 'distance-4');
                 cells[i].textContent = '';
             }
             clickCount = 0;
@@ -195,14 +219,16 @@
 
                 let dist = distance(i, hiddenCell);
                 cell.style.backgroundColor = getColor(dist); 
-                
-                if(i === hiddenCell) {
+                cell.classList.remove('distance-1', 'distance-2', 'distance-3', 'distance-4');
+                cell.classList.add(`distance-${Math.ceil(dist)}`);
+
+                if (i === hiddenCell) {
                     cell.textContent = "🏆"; 
                     gamesPlayed += 1;
                     totalPoints += score;
                     setTimeout(restartGame, 3000); 
                 } else {
-                    cell.textContent = getEmoji(dist);
+                    cell.textContent = ''; // Remove the previous emoji text content
                     score -= 1;
                     updateScoreboard();
                 }
