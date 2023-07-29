@@ -13,7 +13,7 @@
             --color-success: #67c23a;
             --color-danger: #f56c6c;
             --color-info: #909399;
-            --spacing: 10px; /* Adjust spacing for mobile */
+            --spacing: 16px;
         }
         body {
             background-color: var(--color-background);
@@ -34,7 +34,7 @@
             align-items: center;
             gap: var(--spacing);
             width: 90vw;
-            max-width: 500px; /* Adjust max-width for mobile */
+            max-width: 600px;
             padding: var(--spacing);
         }
         .panel {
@@ -57,7 +57,7 @@
             gap: var(--spacing);
         }
         .button {
-            padding: 8px 16px; /* Reduce padding for mobile */
+            padding: 10px 20px;
             background-color: var(--color-primary);
             color: #fff;
             border: none;
@@ -78,8 +78,8 @@
             grid-gap: 0; /* Remove the gaps between cells */
             width: 100%;
             padding: var(--spacing);
-            max-width: 500px; /* Adjust max-width for mobile */
-            max-height: 500px; /* Adjust max-height for mobile */
+            max-width: 600px;
+            max-height: 600px;
         }
         .cell {
             /* Remove the height and padding properties */
@@ -91,7 +91,7 @@
             border: 1px solid var(--color-border);
             cursor: pointer;
             user-select: none;
-            font-size: 2rem; /* Adjust the font size here for mobile */
+            font-size: 3rem; /* Adjust the font size here */
             transition: background-color 0.5s ease;
             position: relative; /* Add a relative position */
         }
@@ -123,14 +123,14 @@
 
         .overlay-text {
             color: #fff;
-            font-size: 2rem; /* Adjust the font size here for mobile */
+            font-size: 3rem;
             text-align: center;
-            margin-bottom: 10px; /* Reduce margin for mobile */
+            margin-bottom: 20px;
         }
 
         .countdown {
             color: #fff;
-            font-size: 1.5rem; /* Adjust the font size here for mobile */
+            font-size: 2rem;
         }
 
         /* Adjust styles for mobile devices */
@@ -142,7 +142,7 @@
                 font-size: 0.9rem;
             }
             #playbox {
-                font-size: 1.5rem; /* Adjust the font size here for mobile */
+                font-size: 2.5rem;
                 max-width: 90vw;
                 max-height: 90vw;
             }
@@ -202,9 +202,130 @@
             </div>
         </div>
     </div>
-    
+
     <script>
-        // The JavaScript code remains the same
+        let score = 25;
+        let gamesPlayed = 0;
+        let totalPoints = 0;
+        const gridSize = 25;
+        let hiddenCell = Math.floor(Math.random() * gridSize);
+        const grid = document.getElementById('playbox');
+        let clickCount = 0;
+        const pulseThreshold = 10; 
+
+        // Calculate distance between two cells
+        function distance(cell1, cell2) {
+            let x1 = cell1 % 5;
+            let y1 = Math.floor(cell1 / 5);
+            let x2 = cell2 % 5;
+            let y2 = Math.floor(cell2 / 5);
+
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+
+        // Calculate color based on distance
+        function getColor(dist) {
+            let normalizedDist = dist / Math.sqrt(50); 
+            
+            let r = Math.floor((1 - normalizedDist) * 255); 
+            let g = 0; 
+            let b = Math.floor(normalizedDist * 255); 
+
+            return `rgb(${r},${g},${b})`;
+        }
+
+        // Get emoji based on distance
+        function getEmoji(dist) {
+            if (dist < 1.5) return "🔥"; 
+            else if (dist < 2.5) return "🥵"; 
+            else if (dist < 3.5) return "❄️"; 
+            else return "🧊"; 
+        }
+
+        // Update the scoreboard
+        function updateScoreboard() {
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('games-played').textContent = `Games Played: ${gamesPlayed}`;
+            document.getElementById('total-points').textContent = `Total Points: ${totalPoints}`;
+        }
+
+        // Restart the game
+        document.getElementById('restart').addEventListener('click', restartGame);
+
+        function restartGame() {
+            score = 25;
+            hiddenCell = Math.floor(Math.random() * gridSize);
+            const cells = document.getElementsByClassName('cell');
+            for (let i = 0; i < cells.length; i++) {
+                cells[i].style.backgroundColor = '';
+                cells[i].textContent = '';
+            }
+            clickCount = 0;
+            updateScoreboard();
+        }
+
+        // Reload the page
+        document.getElementById('reload').addEventListener('click', function() {
+            location.reload();
+        });
+
+        // Show overlay with countdown
+        function showOverlay() {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'flex';
+            let seconds = 3;
+            const countdownElement = document.getElementById('countdown');
+
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = `Next round starts in ${seconds}...`;
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    overlay.style.display = 'none';
+                    restartGame();
+                }
+            }, 1000);
+        }
+
+        // Show instructions overlay
+        document.getElementById('show-instructions').addEventListener('click', function() {
+            const instructionsOverlay = document.getElementById('instructions-overlay');
+            instructionsOverlay.style.display = 'flex';
+        });
+
+        // Close instructions overlay
+        document.getElementById('close-instructions').addEventListener('click', function() {
+            const instructionsOverlay = document.getElementById('instructions-overlay');
+            instructionsOverlay.style.display = 'none';
+        });
+
+        for(let i = 0; i < gridSize; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+
+            cell.addEventListener('click', () => {
+                clickCount++;
+                if (clickCount >= pulseThreshold) {
+                    document.getElementsByClassName('cell')[hiddenCell].classList.add('pulse');
+                }
+
+                let dist = distance(i, hiddenCell);
+                cell.style.backgroundColor = getColor(dist); 
+                
+                if(i === hiddenCell) {
+                    cell.textContent = "🏆"; 
+                    gamesPlayed += 1;
+                    totalPoints += score;
+                    showOverlay(); // Show the overlay when the trophy is found
+                } else {
+                    cell.textContent = getEmoji(dist);
+                    score -= 1;
+                    updateScoreboard();
+                }
+            });
+
+            grid.appendChild(cell);
+        }
     </script>
 </body>
 </html>
