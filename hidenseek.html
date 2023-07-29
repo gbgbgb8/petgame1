@@ -144,14 +144,39 @@
     </div>
     <div id="playbox"></div>
     <div class="panel game-controls">
-        <button class="button" id="restart">Restart</button>
-        <button class="button" id="reload">Reload</button>
+        <button class="button" id="restart">Restart Round</button>
+        <button class="button" id="reload">Reload Game</button>
+        <button class="button" id="show-instructions">?</button>
     </div>
 
     <!-- New overlay element -->
     <div class="overlay" id="overlay" style="display: none;">
         <div class="overlay-text">Congratulations! You found the trophy!</div>
         <div class="countdown" id="countdown">Next round starts in 3...</div>
+    </div>
+
+    <!-- New overlay element for instructions -->
+    <div class="overlay" id="instructions-overlay" style="display: none;">
+        <div class="overlay-text">
+            <h2>Instructions</h2>
+            <p>1. Objective: Find the hidden trophy in the grid of cells.</p>
+            <p>2. Scoring: Each time you click on a cell that doesn't contain the trophy, you lose one point. The score starts at 25 points. The goal is to find the trophy with the highest score possible.</p>
+            <p>3. Game Controls:
+                <ul>
+                    <li>Restart Round: Click this button to start a new round. The trophy will be hidden in a different cell, and your score will be reset to 25 points.</li>
+                    <li>Reload Game: Click this button to reload the entire game, starting from the beginning.</li>
+                </ul>
+            </p>
+            <p>4. How to Play:
+                <ul>
+                    <li>Click on any cell in the grid to reveal its content.</li>
+                    <li>As you get closer to the hidden trophy, the cell's color will change. The color indicates the proximity to the trophy, with warmer colors representing closer proximity.</li>
+                    <li>The emojis inside the cells also indicate your proximity to the trophy. The emojis change as you get closer or farther away.</li>
+                </ul>
+            </p>
+            <p>5. Fun Celebration: When you find the trophy, a fun celebration overlay will appear, congratulating you on your discovery. The next round will automatically start after a brief countdown.</p>
+            <button class="button" id="close-instructions">Close</button>
+        </div>
     </div>
 
     <script>
@@ -237,6 +262,18 @@
                 }
             }, 1000);
         }
+
+        // Show instructions overlay
+        document.getElementById('show-instructions').addEventListener('click', function() {
+            const instructionsOverlay = document.getElementById('instructions-overlay');
+            instructionsOverlay.style.display = 'flex';
+        });
+
+        // Close instructions overlay
+        document.getElementById('close-instructions').addEventListener('click', function() {
+            const instructionsOverlay = document.getElementById('instructions-overlay');
+            instructionsOverlay.style.display = 'none';
+        });
 
         for(let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');
