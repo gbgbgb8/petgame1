@@ -82,18 +82,19 @@
             max-height: 600px;
         }
         .cell {
-    display: grid; /* Use grid to center the content */
-    place-items: center; /* Center the content both horizontally and vertically */
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid var(--color-border);
-    cursor: pointer;
-    user-select: none;
-    font-size: 3rem; /* Adjust the font size here */
-    transition: background-color 0.5s ease;
-    height: 0;
-}
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            user-select: none;
+            font-size: 3rem; /* Adjust the font size here */
+            transition: background-color 0.5s ease;
+            height: 0;
+            padding-bottom: calc(100% - 2 * var(--spacing));
+        }
     </style>
 </head>
 <body>
